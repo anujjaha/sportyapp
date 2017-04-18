@@ -17,6 +17,7 @@ use App\Events\Backend\Access\User\UserPasswordChanged;
 use App\Repositories\Backend\Access\Role\RoleRepository;
 use App\Events\Backend\Access\User\UserPermanentlyDeleted;
 use App\Notifications\Frontend\Auth\UserNeedsConfirmation;
+use App\Models\Usertoken\Usertoken;
 
 /**
  * Class UserRepository.
@@ -38,7 +39,9 @@ class UserRepository extends BaseRepository
      */
     public function __construct(RoleRepository $role)
     {
-        $this->role = $role;
+        $this->role         = $role;
+        $this->userToken    = new Usertoken();
+        $this->model        = new User();
     }
 
     /**
@@ -352,5 +355,125 @@ class UserRepository extends BaseRepository
         $user->confirmed = isset($input['confirmed']) ? 1 : 0;
 
         return $user;
+    }
+    
+    /**
+     * Update User Token
+     * 
+     * @param int $userId
+     * @param string $type
+     * @param string $deviceToken
+     * @param string $pushToken
+     * @return string
+     */
+    public function updateUserToken($userId, $type, $deviceToken, $pushToken = NULL) {
+        $check = $this->checkUserToken($userId, NULL, $deviceToken);
+        if ($check->count()) {
+            $userToken = $check->get()->first();
+        } else {
+            $userToken = new Usertoken();
+            $userToken->user_id = $userId;
+            $userToken->type = $type;
+            $userToken->device_token = $deviceToken;
+        }
+        if ($pushToken) {
+            $userToken->push_token = $pushToken;
+        }
+        $userToken->user_token = $this->randomString(20);
+        $userToken->save();
+        return $userToken->user_token;
+    }
+
+    /**
+     * CHeck User Token
+     * 
+     * @param int $userId
+     * @param string $userToken
+     * @param string $deviceToken
+     * @return bool
+     */
+    public function checkUserToken($userId, $userToken = NULL, $deviceToken = NULL) {
+        $check = $this->userToken
+                ->where('user_id', '=', $userId);
+        if ($userToken) {
+            $check->where('user_token', '=', $userToken);
+        }
+        if ($deviceToken) {
+            $check->where('device_token', '=', $deviceToken);
+        }
+        return $check;
+    }
+    
+    /**
+     * Delete User Token
+     * 
+     * @param int $userId
+     * @param string $userToken
+     * @return boolean
+     */
+    public function deleteUserToken($userId, $userToken) {
+        $userToken = $this->checkUserToken($userId, $userToken)->get()->first();
+        $userToken->user_token = NULL;
+        $userToken->push_token = NULL;
+        if ($userToken->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Random String
+     * 
+     * @param int $length
+     * @param string $type
+     * @return string
+     */
+    public function randomString($length, $type = '') {
+        // Select which type of characters you want in your random string
+        switch ($type) {
+            case 'num':
+                // Use only numbers
+                $salt = '1234567890';
+                break;
+            case 'lower':
+                // Use only lowercase letters
+                $salt = 'abcdefghijklmnopqrstuvwxyz';
+                break;
+            case 'upper':
+                // Use only uppercase letters
+                $salt = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                break;
+            default:
+                // Use uppercase, lowercase, numbers, and symbols
+                $salt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+                break;
+        }
+        $rand = '';
+        $i = 0;
+        while ($i < $length) { // Loop until you have met the length
+            $num = rand() % strlen($salt);
+            $tmp = substr($salt, $num, 1);
+            $rand = $rand . $tmp;
+            $i++;
+        }
+        return $rand; // Return the random string
+    }
+    
+    /**
+     * Check if Email is exist
+     * 
+     * @param  string $email
+     * @return bool
+     */
+    public function checkEmailAlreadyExist($email) {
+        $result = $this->model
+                ->where('email', '=', $email)
+                ->count();
+        if ($result > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
