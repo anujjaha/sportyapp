@@ -19,9 +19,10 @@ class UserTransformer extends Transformer
     public function getUserInfo($data) 
     {
         return [
-            'id'    => $data->id,
+            'id'        => $data->id,
             'name'      => $this->nulltoBlank($data->name),
-            'email'     => $this->nulltoBlank($data->email)
+            'email'     => $this->nulltoBlank($data->email),
+            'location'  => $this->nulltoBlank($data->location)
         ];
     }
     

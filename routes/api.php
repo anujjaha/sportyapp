@@ -22,17 +22,14 @@ Route::group(['namespace' => 'Api',], function ()
     Route::post('login', 'UsersController@login')->name('api.login');
     Route::post('register', 'UsersController@register')->name('api.register');
     Route::post('fblogin', 'UsersController@facebookLogin')->name('api.fblogin');
-    /*Route::post('verifyotp', 'UsersController@verifyOtp')->name('api.verifyotp');
-    Route::post('resendotp', 'UsersController@resendOtp')->name('api.resendotp');
-    Route::post('forgotpassword', 'UsersController@forgotPassword')->name('api.forgotPassword');
-    Route::post('specializations', 'SpecializationController@specializationList')->name('api.specializationList');
-    Route::post('removeotp', 'UsersController@removeOtp')->name('api.removeotp');
-    // send next appointment notification
-    Route::post('sendnext', 'PatientsController@sendNextAppoint')->name('api.sendnext');*/
 });
 
 Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function () 
 {
     Route::get('events', 'EventsController@index')->name('api.events');
-   
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function () 
+    {
+        Route::get('getdata', 'UsersController@getData')->name('api.getdata');
+        Route::post('update', 'UsersController@update')->name('api.update');
+    });    
 });

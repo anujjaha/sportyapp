@@ -119,8 +119,8 @@ class UsersController extends Controller
     public function facebookLogin(Request $request) {
         $postData = $request->all();
         
-        if (isset($postData['facebook_data']) && $postData['facebook_data']
-        ) {
+        if (isset($postData['facebook_data']) && $postData['facebook_data']) 
+        {
             $fbData = json_decode($postData['facebook_data'], true);
             
             $user = $this->users->createFbUser($fbData);
@@ -149,5 +149,25 @@ class UsersController extends Controller
             return $this->respondInternalError('Invalid Arguments');
         }
     }
-
+    
+    public function getData()
+    {
+        $userData = Auth::user();
+        
+        $responseData = $this->userTransformer->getUserInfo($userData);
+        return $this->ApiSuccessResponse($responseData);
+    }
+    
+    public function update(Request $request)
+    {
+        $postData = $request->all();
+        if($this->users->updateAppUser(Auth::user(), $postData))
+        {
+            return $this->ApiSuccessResponse([]);
+        }
+        else
+        {
+            return $this->respondInternalError('Error in Updating data');
+        }        
+    }
 }

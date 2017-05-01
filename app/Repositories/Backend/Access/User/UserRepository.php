@@ -448,4 +448,29 @@ class UserRepository extends BaseRepository
             return false;
         }
     }
+    
+    public function updateAppUser($user, $param)
+    {
+        if(isset($param['name']) && $param['name'])
+        {
+            $user->name = $param['name'];
+        }
+        if(isset($param['email']) && $param['email'])
+        {
+            $user->email = $param['email'];
+        }
+        if(isset($param['location']) && $param['location'])
+        {
+            $user->location = $param['location'];
+        }
+        if(isset($param['password']) && $param['password'])
+        {
+            $user->email = bcrypt($param['password']);
+        }
+        if ($user->save()) {            
+            return $user;
+        } else {
+            return false;
+        }
+    }
 }
