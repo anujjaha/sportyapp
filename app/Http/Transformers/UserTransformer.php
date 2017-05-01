@@ -9,8 +9,8 @@ class UserTransformer extends Transformer
     public function transform($data) 
     {
         return [
-            'userId'    => $data->id,
-            'userToken' => $data->token,
+            'id'    => $data->id,
+            'token' => $data->token,
             'name'      => $this->nulltoBlank($data->name),
             'email'     => $this->nulltoBlank($data->email)
         ];
@@ -19,7 +19,7 @@ class UserTransformer extends Transformer
     public function getUserInfo($data) 
     {
         return [
-            'userId'    => $data->id,
+            'id'    => $data->id,
             'name'      => $this->nulltoBlank($data->name),
             'email'     => $this->nulltoBlank($data->email)
         ];

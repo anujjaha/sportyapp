@@ -36,9 +36,9 @@ class UserRepository extends BaseRepository
     /**
      * @param RoleRepository $role
      */
-    public function __construct(RoleRepository $role)
+    public function __construct()
     {
-        $this->role = $role;
+        $this->role = new RoleRepository();
     }
 
     /**
@@ -355,5 +355,97 @@ class UserRepository extends BaseRepository
         $user->confirmed = isset($input['confirmed']) ? 1 : 0;
 
         return $user;
+    }
+    
+    /**
+     * 
+     * @param type $postData
+     * @return User|boolean
+     */
+    public function createAppUser($postData) {
+        $user = self::MODEL;
+        $user = new $user();        
+        $user->name = $postData['name'];
+        $user->email = $postData['email'];
+        $user->password = bcrypt($postData['password']);
+        $user->status = 1;
+        //$user->confirmation_code = md5(uniqid(mt_rand(), true));
+        $user->confirmed = 1;        
+        /*
+         * get User role details
+         */
+        $roleDetails = $this->role->getDefaultUserRole();
+        if ($user->save()) {
+            $user->attachRole($roleDetails);
+            return $user;
+        } else {
+            return false;
+        }
+    }
+    
+    public function checkEmailAlreadyExist($email) {
+        $result = $this->query()
+                ->where('email', '=', $email)
+                ->count();
+        if ($result > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    public function createFbUser($param) {
+        $isUserExist = false;
+        if(isset($param['email']) && $param['email'])
+        {
+            $user = $this->query()
+                ->where('email', '=', $param['email'])
+                ->get()->first();
+            if($user)
+            {
+                $isUserExist = true;
+            }            
+        }
+        else
+        {
+            $user = $this->query()
+                    ->where('fb_id', '=', $param['id'])
+                    ->get()->first();
+            if($user)
+            {
+                $isUserExist = true;
+            }
+        }
+        
+        if(!$isUserExist)
+        {
+            $user = self::MODEL;
+            $user = new $user();
+        }
+        if(isset($param['name']) && $param['name'])
+        {
+            $user->name = $param['name'];
+        }
+        if(isset($param['email']) && $param['email'])
+        {
+            $user->email = $param['email'];
+        }
+        $user->fb_id        = $param['id'];
+        $user->status       = 1;
+        $user->confirmed    = 1; 
+        
+        /*
+         * get User role details
+         */
+        $roleDetails = $this->role->getDefaultUserRole();
+        if ($user->save()) {
+            if(!$isUserExist)
+            {
+                $user->attachRole($roleDetails);
+            }            
+            return $user;
+        } else {
+            return false;
+        }
     }
 }
