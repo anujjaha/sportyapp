@@ -38,7 +38,7 @@ class UsersController extends Controller
      */
     public function login(Request $request) 
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
         try {
             // verify the credentials and create a token for the user
@@ -52,8 +52,7 @@ class UsersController extends Controller
         $user = Auth::user()->toArray();
 
         $userData = array_merge($user, ['token' => $token]);
-
-        $responseData = $this->userTransformer->transform((object)$userData);
+        $responseData = $this->userTransformer->getUserInfo($userData);
 
         // if no errors are encountered we can return a JWT
         return $this->ApiSuccessResponse($responseData);
@@ -78,14 +77,17 @@ class UsersController extends Controller
     
     public function register(Request $request) {
         $postData = $request->all();
-        if (isset($postData['email']) && $postData['email'] &&
+        if (isset($postData['username']) && $postData['username'] &&
+                isset($postData['email']) && $postData['email'] &&
                 isset($postData['password']) && $postData['password'] &&
                 isset($postData['name']) && $postData['name']
         ) {
             if (!$this->users->checkEmailAlreadyExist($postData['email'])) {
                 return $this->respondInternalError('User\'s Email Already Exist');
             }
-
+            if (!$this->users->checkUserNameAlreadyExist($postData['username'])) {
+                return $this->respondInternalError('Username Already Exist');
+            }
             $user = $this->users->createAppUser($postData);
             //check user is created 
             if ($user) {
@@ -106,7 +108,7 @@ class UsersController extends Controller
 
                 $userData = array_merge($user, ['token' => $token]);
                 
-                $responseData = $this->userTransformer->transform((object)$userData);
+                $responseData = $this->userTransformer->getUserInfo($userData);
                 return $this->ApiSuccessResponse($responseData);
             } else {
                 return $this->respondInternalError('Invalid Arguments');
@@ -140,7 +142,7 @@ class UsersController extends Controller
 
                 $userData = array_merge($user, ['token' => $token]);
                 
-                $responseData = $this->userTransformer->transform((object)$userData);
+                $responseData = $this->userTransformer->getUserInfo($userData);
                 return $this->ApiSuccessResponse($responseData);
             } else {
                 return $this->respondInternalError('Invalid Arguments');
@@ -154,7 +156,7 @@ class UsersController extends Controller
     {
         $userData = Auth::user();
         
-        $responseData = $this->userTransformer->getUserInfo($userData);
+        $responseData = $this->userTransformer->transform($userData);
         return $this->ApiSuccessResponse($responseData);
     }
     
@@ -169,5 +171,13 @@ class UsersController extends Controller
         {
             return $this->respondInternalError('Error in Updating data');
         }        
+    }
+    
+    public function getList(Request $request)
+    {
+        $postData = $request->all();
+        $users = $this->users->getAppUserList($postData, Auth::user());
+        $responseData = $this->userTransformer->transformCollection($users->toArray());
+        return $this->ApiSuccessResponse($responseData);
     }
 }

@@ -364,13 +364,22 @@ class UserRepository extends BaseRepository
      */
     public function createAppUser($postData) {
         $user = self::MODEL;
-        $user = new $user();        
-        $user->name = $postData['name'];
-        $user->email = $postData['email'];
-        $user->password = bcrypt($postData['password']);
-        $user->status = 1;
-        //$user->confirmation_code = md5(uniqid(mt_rand(), true));
-        $user->confirmed = 1;        
+        $user = new $user();   
+        $user->username     = $postData['username'];
+        $user->name         = $postData['name'];
+        $user->email        = $postData['email'];
+        $user->password     = bcrypt($postData['password']);
+        $user->status       = 1;
+        $user->confirmed    = 1;  
+        $destinationFolder  = public_path().'/uploads/users';
+        if (isset($postData['image']) && $postData['image']) { 
+            $extension = $postData['image']->getClientOriginalExtension();
+            $fileName = rand(11111,99999).'.'.$extension;
+            if($postData['image']->move($destinationFolder, $fileName))
+            {
+                $user->image = $fileName;
+            }                       
+        }
         /*
          * get User role details
          */
@@ -386,6 +395,17 @@ class UserRepository extends BaseRepository
     public function checkEmailAlreadyExist($email) {
         $result = $this->query()
                 ->where('email', '=', $email)
+                ->count();
+        if ($result > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    public function checkUserNameAlreadyExist($username) {
+        $result = $this->query()
+                ->where('username', '=', $username)
                 ->count();
         if ($result > 0) {
             return false;
@@ -467,10 +487,35 @@ class UserRepository extends BaseRepository
         {
             $user->email = bcrypt($param['password']);
         }
+        $destinationFolder  = public_path().'/uploads/users';
+        if (isset($param['image']) && $param['image']) { 
+            $extension = $param['image']->getClientOriginalExtension();
+            $fileName = rand(11111,99999).'.'.$extension;
+            if($param['image']->move($destinationFolder, $fileName))
+            {
+                $user->image = $fileName;
+            }                       
+        }
         if ($user->save()) {            
             return $user;
         } else {
             return false;
         }
+    }
+    
+    public function getAppUserList($param, $user)
+    {
+        $users = $this->query()
+                ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+                ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+                ->where('roles.name','=', config('access.users.default_role'))
+                ->where('users.id', '!=', $user->id)
+                ->select('users.*')
+                ->orderBy('users.name');
+        if(isset($param['search']) && $param['search'])
+        {
+            $users = $users->where('users.name', 'LIKE', $param["search"].'%');
+        }
+        return $users->get();
     }
 }

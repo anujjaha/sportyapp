@@ -31,5 +31,6 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     {
         Route::get('getdata', 'UsersController@getData')->name('api.getdata');
         Route::post('update', 'UsersController@update')->name('api.update');
+        Route::post('getlist', 'UsersController@getList')->name('api.getlist');
     });    
 });
