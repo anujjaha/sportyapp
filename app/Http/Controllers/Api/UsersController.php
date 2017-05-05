@@ -180,7 +180,7 @@ class UsersController extends Controller
         return $this->ApiSuccessResponse($responseData);
     }
 
-    public function checkUserName()
+    public function checkUserName(Request $request)
     {
         $postData = $request->all();   
         if (!$this->users->checkUserNameAlreadyExist($postData['username'])) {
