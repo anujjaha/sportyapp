@@ -367,7 +367,7 @@ class UserRepository extends BaseRepository
         $user = new $user();   
         $user->username     = $postData['username'];
         $user->name         = $postData['name'];
-        $user->email        = $postData['email'];
+        $user->email        = isset($postData['email']) ? $postData['email'] : '';
         $user->password     = bcrypt($postData['password']);
         $user->status       = 1;
         $user->confirmed    = 1;  

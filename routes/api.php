@@ -22,6 +22,7 @@ Route::group(['namespace' => 'Api',], function ()
     Route::post('login', 'UsersController@login')->name('api.login');
     Route::post('register', 'UsersController@register')->name('api.register');
     Route::post('fblogin', 'UsersController@facebookLogin')->name('api.fblogin');
+    Route::post('checkusername', 'UsersController@checkUserName')->name('api.checkusername');
 });
 
 Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function () 
