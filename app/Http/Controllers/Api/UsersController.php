@@ -179,4 +179,16 @@ class UsersController extends Controller
         $responseData = $this->userTransformer->transformCollection($users->toArray());
         return $this->ApiSuccessResponse($responseData);
     }
+
+    public function checkUserName()
+    {
+        $postData = $request->all();   
+        if (!$this->users->checkUserNameAlreadyExist($postData['username'])) {
+            return $this->respondInternalError('Username Already Exist');
+        } 
+        else
+        {
+            return $this->ApiSuccessResponse([]);
+        }
+    }
 }
