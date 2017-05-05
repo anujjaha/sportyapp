@@ -78,11 +78,10 @@ class UsersController extends Controller
     public function register(Request $request) {
         $postData = $request->all();
         if (isset($postData['username']) && $postData['username'] &&
-                isset($postData['email']) && $postData['email'] &&
                 isset($postData['password']) && $postData['password'] &&
                 isset($postData['name']) && $postData['name']
         ) {
-            if (!$this->users->checkEmailAlreadyExist($postData['email'])) {
+            if (isset($postData['email']) && !$this->users->checkEmailAlreadyExist($postData['email'])) {
                 return $this->respondInternalError('User\'s Email Already Exist');
             }
             if (!$this->users->checkUserNameAlreadyExist($postData['username'])) {
