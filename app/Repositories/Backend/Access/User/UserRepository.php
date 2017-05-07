@@ -369,6 +369,7 @@ class UserRepository extends BaseRepository
         $user->name         = $postData['name'];
         $user->email        = isset($postData['email']) ? $postData['email'] : '';
         $user->password     = bcrypt($postData['password']);
+        $user->location     = isset($postData['location']) ? $postData['location'] : '';
         $user->status       = 1;
         $user->confirmed    = 1;  
         $destinationFolder  = public_path().'/uploads/users';
