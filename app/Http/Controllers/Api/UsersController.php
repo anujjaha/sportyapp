@@ -92,7 +92,7 @@ class UsersController extends Controller
             if ($user) {
                 $this->setStatusCode(200);
                 
-                $credentials = $request->only('email', 'password');
+                $credentials = $request->only('username', 'password');
                 try {
                     // verify the credentials and create a token for the user
                     if (! $token = JWTAuth::attempt($credentials)) {
