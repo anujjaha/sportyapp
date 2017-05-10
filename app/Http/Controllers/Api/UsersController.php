@@ -16,6 +16,7 @@ use App\Http\Utilities\FileUploads;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuthExceptions\JWTException;
 use Auth;
+use App\Repositories\FollowUser\EloquentFollowUserRepository;
 
 class UsersController extends Controller 
 {
@@ -28,6 +29,7 @@ class UsersController extends Controller
     {
         $this->userTransformer  = $userTransformer;
         $this->users            = new UserRepository();
+        $this->followUser       = new EloquentFollowUserRepository();
     }
 
     /**
@@ -190,5 +192,59 @@ class UsersController extends Controller
         {
             return $this->ApiSuccessResponse([]);
         }
+    }
+
+    public function follow(Request $request)
+    {
+        $postData = $request->all(); 
+
+        if(isset($postData['user_id']) && $postData['user_id'])
+        {
+            $postData['follower_id'] = Auth::user()->id;
+
+            if(!$this->followUser->checkRecordExist($postData))
+            {
+                $this->followUser->create($postData);
+
+                $this->setSuccessMessage("User Successfully Follwed");
+
+                return $this->ApiSuccessResponse([]);
+            }
+            else
+            {
+                return $this->respondInternalError('User Already Followed');   
+            }
+        } 
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        }  
+    }
+
+    public function unFollow(Request $request)
+    {
+        $postData = $request->all(); 
+
+        if(isset($postData['user_id']) && $postData['user_id'])
+        {
+            $postData['follower_id'] = Auth::user()->id;
+
+            if($this->followUser->checkRecordExist($postData))
+            {
+                $this->followUser->findAndDestroy($postData);
+
+                $this->setSuccessMessage("User Successfully Unfollwed");
+                
+                return $this->ApiSuccessResponse([]);
+            }
+            else
+            {
+                return $this->respondInternalError('Follow User First');   
+            }
+        } 
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        }  
     }
 }

@@ -17,7 +17,15 @@ class Controller extends BaseController
      * @var integer
      */
     protected $statusCode = 200;
-     /**
+
+    /**
+     * default status code
+     *
+     * @var integer
+     */
+    protected $successMessage = 'Success';
+
+    /**
      * get the status code
      *
      * @return statuscode
@@ -26,6 +34,29 @@ class Controller extends BaseController
     {
     	return $this->statusCode;
     }
+
+    /**
+     * get the status code
+     *
+     * @return statuscode
+     */
+    public function getSuccessMessage()
+    {
+        return $this->successMessage;
+    }
+
+    /**
+     * set the Success Message
+     *
+     * @param String $successMessage
+     * @return mix
+     */
+    public function setSuccessMessage($successMessage)
+    {
+        $this->successMessage = $successMessage;
+        return $this;
+    }
+
     /**
      * set the status code
      *
@@ -80,7 +111,7 @@ class Controller extends BaseController
     public function ApiSuccessResponse($data = array(), $headers = [])
     {
         $response['data'] = $data;
-        $response['message'] = 'Success';
+        $response['message'] = $this->getSuccessMessage();
         $response['code'] = $this->getStatusCode();
     	//return Response::json($response, $this->getStatusCode(), $headers);
         return Response::json($response);
