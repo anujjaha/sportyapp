@@ -36,4 +36,13 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
         Route::post('follow', 'UsersController@follow')->name('api.follow');
         Route::post('unfollow', 'UsersController@unFollow')->name('api.unfollow');
     });
+
+    Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () 
+    {
+        Route::get('getlist', 'PostsController@getList')->name('api.getlist');
+        Route::post('getdata', 'PostsController@getData')->name('api.getlist');
+        Route::post('create', 'PostsController@create')->name('api.create');
+        Route::post('update', 'PostsController@update')->name('api.update');
+        Route::post('delete', 'PostsController@getList')->name('api.delete');
+    });
 });

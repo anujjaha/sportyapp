@@ -2,7 +2,7 @@
 
 namespace App\Http\Transformers;
 
-use App\Http\Transformers;
+use App\Http\Transformers\Transformer;
 use URL;
 
 class UserTransformer extends Transformer 
