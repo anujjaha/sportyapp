@@ -43,6 +43,6 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
         Route::post('getdata', 'PostsController@getData')->name('api.getlist');
         Route::post('create', 'PostsController@create')->name('api.create');
         Route::post('update', 'PostsController@update')->name('api.update');
-        Route::post('delete', 'PostsController@getList')->name('api.delete');
+        Route::post('delete', 'PostsController@delete')->name('api.delete');
     });
 });

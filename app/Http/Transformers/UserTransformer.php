@@ -15,7 +15,8 @@ class UserTransformer extends Transformer
             'name'      => $this->nulltoBlank($data['name']),
             'email'     => $this->nulltoBlank($data['email']),
             'location'  => $this->nulltoBlank($data['location']),
-            'image'     => $data['image'] ? URL::to('/').'/uploads/users/'.$data['image'] : ''
+            'image'     => $data['image'] ? URL::to('/').'/uploads/users/'.$data['image'] : '',
+            'is_follow' => (isset($data['is_follow']) && $data['is_follow']) ? 1 : 0
         ];
     }
     

@@ -143,6 +143,7 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
      {
      	$list = $this->model->leftJoin('follow_user', 'follow_user.user_id', '=', 'posts.user_id')
      			->where('follow_user.follower_id', '=', $userId)
+     			->orWhere('posts.user_id', '=', $userId)
      			->select('posts.*')
                 ->orderBy('posts.created_at', 'DESC');
 

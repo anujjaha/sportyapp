@@ -177,7 +177,7 @@ class UsersController extends Controller
     public function getList(Request $request)
     {
         $postData = $request->all();
-        $users = $this->users->getAppUserList($postData, Auth::user());
+        $users = $this->users->getAppUserList($postData, Auth::user()->id);
         $responseData = $this->userTransformer->transformCollection($users->toArray());
         return $this->ApiSuccessResponse($responseData);
     }

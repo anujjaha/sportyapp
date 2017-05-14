@@ -17,6 +17,7 @@ use App\Events\Backend\Access\User\UserPasswordChanged;
 use App\Repositories\Backend\Access\Role\RoleRepository;
 use App\Events\Backend\Access\User\UserPermanentlyDeleted;
 use App\Notifications\Frontend\Auth\UserNeedsConfirmation;
+use App\Repositories\FollowUser\EloquentFollowUserRepository;
 
 /**
  * Class UserRepository.
@@ -38,7 +39,8 @@ class UserRepository extends BaseRepository
      */
     public function __construct()
     {
-        $this->role = new RoleRepository();
+        $this->role         = new RoleRepository();
+        $this->userFollow   = new EloquentFollowUserRepository();
     }
 
     /**
@@ -504,19 +506,27 @@ class UserRepository extends BaseRepository
         }
     }
     
-    public function getAppUserList($param, $user)
+    public function getAppUserList($param, $userId)
     {
         $users = $this->query()
                 ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
                 ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('roles.name','=', config('access.users.default_role'))
-                ->where('users.id', '!=', $user->id)
+                ->where('users.id', '!=', $userId)
                 ->select('users.*')
                 ->orderBy('users.name');
         if(isset($param['search']) && $param['search'])
         {
             $users = $users->where('users.name', 'LIKE', $param["search"].'%');
         }
-        return $users->get();
+        $users = $users->get();
+        foreach($users as $key => $value)
+        {
+            $users[$key]->is_follow = $this->userFollow->checkRecordExist([
+                    'user_id'       => $value->id,
+                    'follower_id'   => $userId
+                ]);
+        }
+        return $users;
     }
 }
