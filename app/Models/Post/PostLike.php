@@ -34,4 +34,6 @@ class PostLike extends BaseModel
      */
     protected $guarded = ["id"];
 
+    public $timestamps = false;
+
 }

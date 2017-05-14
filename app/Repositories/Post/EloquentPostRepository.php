@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Post;
 
 use App\Models\Post\Post;
+use App\Models\Post\PostLike;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 
@@ -19,7 +20,8 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 	 */
 	public function __construct()
 	{
-		$this->model = new Post();
+		$this->model 	= new Post();
+		$this->postLike = new PostLike();
 	}
 
 	/**
@@ -141,17 +143,53 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 
     public function getPostListByFollower($userId, $page = 1)
      {
-     	$list = $this->model->leftJoin('follow_user', 'follow_user.user_id', '=', 'posts.user_id')
+     	$posts = $this->model->leftJoin('follow_user', 'follow_user.user_id', '=', 'posts.user_id')
      			->where('follow_user.follower_id', '=', $userId)
      			->orWhere('posts.user_id', '=', $userId)
      			->select('posts.*')
                 ->orderBy('posts.created_at', 'DESC');
 
-     	if(isset($param['search']) && $param['search'])
+        $posts = $posts->get();
+        foreach($posts as $key => $value)
         {
-            $users = $users->where('users.name', 'LIKE', $param["search"].'%');
+        	$posts[$key]->is_liked = $this->checkPostLike($value->id, $userId);
         }
-        return $list->get();	
+        return $posts;	
      } 
+
+    public function checkPostLike($postId, $userId)
+    {
+    	$check = $this->postLike
+				 ->where(['post_id' => $postId, 'user_id' => $userId])    			
+    			 ->count(); 
+    	if($check > 0)
+    	{
+    		return true;
+    	}	
+    	return false;
+    }
+
+    public function createPostLike($postData)
+    {
+    	return $this->postLike->create($postData);
+    }
+
+    /**
+	 * Destroy Record
+	 *
+	 * @param int $id
+	 * @return mixed
+	 * @throws GeneralException
+	 */
+	public function destroyPostLike($postId, $userId)
+	{
+		$model = $this->postLike->where(['post_id' => $postId, 'user_id' => $userId]);
+
+		if($model)
+		{
+			return $model->delete();
+		}
+		return false;
+	}
 
 }

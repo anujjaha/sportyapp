@@ -44,5 +44,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
         Route::post('create', 'PostsController@create')->name('api.create');
         Route::post('update', 'PostsController@update')->name('api.update');
         Route::post('delete', 'PostsController@delete')->name('api.delete');
+        Route::post('like', 'PostsController@like')->name('api.like');
+        Route::post('unlike', 'PostsController@unLike')->name('api.unlike');
     });
 });

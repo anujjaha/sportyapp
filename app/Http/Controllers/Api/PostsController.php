@@ -100,10 +100,12 @@ class PostsController extends Controller
 
     public function getData(Request $request)
     {
-        $postData = $request->all();
+        $postData   = $request->all();
+        $userId     = Auth::user()->id;
         if(isset($postData['id']) && $postData['id'])
         {
-            $post = $this->respository->getById($postData['id']);
+            $post           = $this->respository->getById($postData['id']);
+            $post->is_liked = $this->checkPostLike($post->id, $userId);
             if($post)
             {
                 $responseData   = $this->postTransformer->transform($post->toArray());
@@ -118,5 +120,75 @@ class PostsController extends Controller
         {
             return $this->respondInternalError('Provide Valid prameters');
         }
+    }
+
+    public function like(Request $request)
+    {
+        $postData   = $request->all();
+        $userId     = Auth::user()->id; 
+
+        if(isset($postData['post_id']) && $postData['post_id'])
+        {
+            $post = $this->respository->getById($postData['post_id']);
+            if($post)
+            {
+                $postData['user_id'] = $userId;
+
+                if(!$this->respository->checkPostLike($postData['post_id'], $userId))
+                {
+                    $this->respository->createPostLike($postData);
+
+                    $this->setSuccessMessage("Post Successfully Liked");
+
+                    return $this->ApiSuccessResponse([]);
+                }
+                else
+                {
+                    return $this->respondInternalError('Post Already Liked');   
+                }
+            }
+            else
+            {
+                return $this->respondInternalError("Post doesn't exist.");
+            }            
+        } 
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        }  
+    }
+
+    public function unLike(Request $request)
+    {
+        $postData   = $request->all(); 
+        $userId     = Auth::user()->id;
+
+        if(isset($postData['post_id']) && $postData['post_id'])
+        {
+            $post = $this->respository->getById($postData['post_id']);
+            if($post)
+            {
+                if($this->respository->checkPostLike($postData['post_id'], $userId))
+                {
+                    $this->respository->destroyPostLike($postData['post_id'], $userId);
+
+                    $this->setSuccessMessage("Post Successfully Unliked");
+                    
+                    return $this->ApiSuccessResponse([]);
+                }
+                else
+                {
+                    return $this->respondInternalError('Like Post First');   
+                }
+            }
+            else
+            {
+                return $this->respondInternalError("Post doesn't exist.");
+            }
+        } 
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        }  
     }
 }

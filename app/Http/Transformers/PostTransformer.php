@@ -18,7 +18,8 @@ class PostTransformer extends Transformer
             'id'            => (int) $data['id'],
             'image'         => $data['image'] ? URL::to('/').'/uploads/posts/'.$data['image'] : '',
             'description'   => $this->nulltoBlank($data['description']),
-            'created_at'    => date('m/d/Y H:i:s', strtotime($data['created_at']))
+            'created_at'    => date('m/d/Y H:i:s', strtotime($data['created_at'])),
+            'is_liked'      => (isset($data['is_liked']) && $data['is_liked']) ? 1 : 0
         ];
     }
 }
