@@ -41,6 +41,7 @@ class UserRepository extends BaseRepository
     {
         $this->role         = new RoleRepository();
         $this->userFollow   = new EloquentFollowUserRepository();
+        $this->model        = new User;
     }
 
     /**
@@ -528,5 +529,19 @@ class UserRepository extends BaseRepository
                 ]);
         }
         return $users;
+    }
+
+    public function getCelebratyFans($user)
+    {
+        $celebraty = [2, 3, 8, 9];
+        
+        return $this->model->whereIn('id', $celebraty)->get();
+    }
+
+    public function getNormalFans($user)
+    {
+        $normal = [10, 11, 12, 13];
+        
+        return $this->model->whereIn('id', $normal)->get();
     }
 }

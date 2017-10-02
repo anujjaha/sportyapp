@@ -28,6 +28,12 @@ Route::group(['namespace' => 'Api',], function ()
 Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function () 
 {
     Route::get('events', 'EventsController@index')->name('api.events');
+
+
+    Route::get('sporty-fans', 'APIFansController@index')->name('fans.index');
+
+
+
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () 
     {
         Route::get('getdata', 'UsersController@getData')->name('api.getdata');
@@ -35,6 +41,9 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
         Route::post('getlist', 'UsersController@getList')->name('api.getlist');
         Route::post('follow', 'UsersController@follow')->name('api.follow');
         Route::post('unfollow', 'UsersController@unFollow')->name('api.unfollow');
+
+        Route::get('get-fans', 'UsersController@getFanData')->name('fan.getdata');
+
     });
 
     Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () 

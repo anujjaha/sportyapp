@@ -32,4 +32,32 @@ class UserTransformer extends Transformer
             'image'     => $data['image'] ? URL::to('/').'/uploads/users/'.$data['image'] : ''
         ];
     }
+
+    /**
+     * FanTransform
+     * 
+     * @param object $items
+     * @return array
+     */
+    public function fanTransform($items)
+    {
+        $response = [];
+        foreach($items as $item)
+        {
+            $item = (object)$item;
+
+            $response[] = [
+                'id'        => $item->id,            
+                'username'  => $this->nulltoBlank($item->username),
+                'name'      => $this->nulltoBlank($item->name),
+                'email'     => $this->nulltoBlank($item->email),
+                'location'  => $this->nulltoBlank($item->location),
+                'image'     => $item->image ? URL::to('/').'/uploads/users/'.$item->image : '',
+                'is_follow' => 1,
+                'follow_time' => "10 min ago"
+            ];
+        }
+
+        return $response;
+    }
 }

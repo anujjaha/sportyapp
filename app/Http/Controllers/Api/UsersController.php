@@ -160,6 +160,30 @@ class UsersController extends Controller
         $responseData = $this->userTransformer->transform($userData);
         return $this->ApiSuccessResponse($responseData);
     }
+
+    /**
+     * Get Fan Data
+     * 
+     * @param Request $request
+     * @return json
+     */
+    public function getFanData(Request $request)
+    {
+        $user = Auth::user();
+        
+        $celebraty      = $this->users->getCelebratyFans($user->id);
+        $normalFans     = $this->users->getNormalFans($user->id);
+        $celebratyData  = $this->userTransformer->fanTransform($celebraty->toArray());
+        $normalData     = $this->userTransformer->fanTransform($normalFans->toArray());
+
+        $responseData = [
+            'celebrity' => $celebratyData,
+            'normal'    => $normalData
+        ];
+
+        
+        return $this->ApiSuccessResponse($responseData);
+    }
     
     public function update(Request $request)
     {
