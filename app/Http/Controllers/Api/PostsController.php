@@ -38,7 +38,7 @@ class PostsController extends Controller
     public function create(Request $request)
     {
         $postData = $request->all();
-        if(isset($postData['description']) && $postData['description'] && isset($postData['image']) && $postData['image'])
+        if(isset($postData['description']) && $postData['description'])
         {
             $postData['user_id']    = Auth::user()->id;
             $response               = $this->respository->create($postData);
@@ -93,9 +93,29 @@ class PostsController extends Controller
     public function getList()
     {
         $userId         = Auth::user()->id;
-        $posts          = $this->respository->getPostListByFollower($userId);
-        $responseData   = $this->postTransformer->transformCollection($posts->toArray());
+        $posts          = $this->respository->getAllPosts($userId);
+        $responseData   = $this->postTransformer->postListWithLike($posts);
+
         return $this->ApiSuccessResponse($responseData);
+    }
+
+    /**
+     * Get Single Item
+     * 
+     * @return array
+     */
+    public function getSingleItem(Request $request)
+    {
+        if($request->get('post_id'))
+        {
+            $userId         = Auth::user()->id;
+            $post           = $this->respository->getSinglePostById($userId, $request->get('post_id'));
+            $responseData   = $this->postTransformer->postListWithLike($post);
+
+            return $this->ApiSuccessResponse($responseData);
+        }
+
+        return $this->respondInternalError('Invalid Post Id');
     }
 
     public function getData(Request $request)
@@ -190,5 +210,62 @@ class PostsController extends Controller
         {
             return $this->respondInternalError('Provide Valid prameters');
         }  
+    }
+
+    /**
+     * Create Comment
+     * 
+     * @param Request $request
+     * @return array
+     */
+    public function createComment(Request $request)
+    {
+        if($request->get('post_id') && $request->get('comment'))
+        {
+            $userId = Auth::user()->id;
+            $status = $this->respository->createComment($userId, $request->all());
+
+            if($status)
+            {
+                $this->setSuccessMessage("Comment Added Successfully.");
+                
+                return $this->ApiSuccessResponse([]);
+            }
+
+            return $this->respondInternalError('Something went wrong !');
+        }
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        }
+    }
+
+    /**
+     * Delete Comment
+     * 
+     * @param  Request $request
+     * @return array
+     */
+    public function deleteComment(Request $request)
+    {
+       if($request->get('post_id'))
+        {
+            $userId = Auth::user()->id;
+            $postId = $request->get('post_id');
+            $status = $this->respository->deleteComment($userId, $postId);
+
+            if($status)
+            {
+                $this->setSuccessMessage("Comment Deleted Successfully.");
+                
+                return $this->ApiSuccessResponse([]);
+            }
+
+            return $this->respondInternalError('Something went wrong !');
+        }
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        } 
     }
 }

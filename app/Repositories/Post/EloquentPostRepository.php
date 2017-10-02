@@ -1,6 +1,7 @@
 <?php namespace App\Repositories\Post;
 
 use App\Models\Post\Post;
+use App\Models\Post\PostComment;
 use App\Models\Post\PostLike;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
@@ -141,6 +142,26 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
         return false;
     } 
 
+    /**
+     * Get AllPosts
+     * 
+     * @return object
+     */
+   	public function getAllPosts($userId = null)
+   	{
+   		return $this->model->with('post_likes')->orderBy('id', 'desc')->get();
+   	}
+
+   	/**
+     * Get Single Post By Id
+     * 
+     * @return object
+     */
+   	public function getSinglePostById($userId = null, $postId = null)
+   	{
+   		return $this->model->with('post_likes')->where('id', $postId)->orderBy('id', 'desc')->get();
+   	}
+
     public function getPostListByFollower($userId, $page = 1)
      {
      	$posts = $this->model->leftJoin('follow_user', 'follow_user.user_id', '=', 'posts.user_id')
@@ -192,4 +213,45 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 		return false;
 	}
 
+	/**
+	 * Create Comment
+	 * 
+	 * @param int $userId
+	 * @param array  $input
+	 * @return bool
+	 */
+	public function createComment($userId = null, $input = array())
+	{
+		if($userId && count($input))
+		{
+			$commentData = [
+				'user_id' 	=> $userId,
+				'post_id'	=> $input['post_id'],
+				'comment'	=> $input['comment']
+			];
+
+			return PostComment::create($commentData);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Delete Comment
+	 * 
+	 * @param int $userId
+	 * @param int $postId
+	 * @return bool
+	 */
+	public function deleteComment($userId = null, $postId = null)
+	{
+		if($userId && $postId)
+		{
+			$postComment = new PostComment;
+
+			return $postComment->where(['user_id' => $userId, 'post_id' => $postId])->delete();
+		}
+
+		return false;
+	}
 }

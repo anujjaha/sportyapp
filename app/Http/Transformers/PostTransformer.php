@@ -22,4 +22,77 @@ class PostTransformer extends Transformer
             'is_liked'      => (isset($data['is_liked']) && $data['is_liked']) ? 1 : 0
         ];
     }
+
+    public function postListWithLike($posts)
+    {
+        $response = [];
+
+        $sr = 0;
+        $currentUser = access()->user()->id;
+
+        foreach($posts as $post)
+        {
+            $response[$sr] = [  
+                'id'                => (int) $post->id,
+                'image'             => $post->image ? URL::to('/').'/uploads/posts/'.$post->image : '',
+                'description'       => $this->nulltoBlank($post->description),
+                'postCategory'      => $post->post_category,
+                'is_liked'          =>  0,
+                'created_at'        => date('m/d/Y H:i:s', strtotime($post->created_at)),
+                'postLikeCount'     => isset($post->post_likes) ? count($post->post_likes) : 0,
+                'postCommentCount'  => isset($post->post_comments) ? count($post->post_comments) : 0,
+                'postLikeUser'      => [],
+                'postComments'      => [],
+                'postCreator'       => [
+                    'userId'    => $post->user->id,
+                    'name'      => $post->user->name,
+                    'username'  => $post->user->username,
+                    'email'     => $post->user->email,
+                    'location'  => $post->user->location
+                ],
+            ];
+
+            if(isset($post->post_comments))
+            {
+                foreach($post->post_comments as $postComment)
+                {
+                    $response[$sr]['postComments'][] = [
+                        'commentId'         => $postComment->id,
+                        'commentText'       => $postComment->comment,
+                        'commentCreatedAt'  => date('m-d-Y H:i:s', strtotime($postComment->created_at)),
+                        'userId'    => $postComment->user->id,            
+                        'username'  => $postComment->user->username,
+                        'name'      => $postComment->user->name,
+                        'email'     => $postComment->user->email,
+                        'location'  => $postComment->user->location,
+                        'image'     => $postComment->user->image ? URL::to('/').'/uploads/users/'.$postComment->user->image : '',
+                    ];
+                }
+            }
+
+            if(isset($post->post_likes))
+            {
+                foreach($post->post_likes as $postLike)
+                {
+                    if($postLike->id == $currentUser)
+                    {
+                        $response[$sr]['is_liked']  = 1;
+                    }
+
+                    $response[$sr]['postLikeUser'][] = [
+                        'id'        => $postLike->id,            
+                        'username'  => $postLike->username,
+                        'name'      => $postLike->name,
+                        'email'     => $postLike->email,
+                        'location'  => $postLike->location,
+                        'image'     => $postLike->image ? URL::to('/').'/uploads/users/'.$postLike->image : '',
+                    ];
+                }
+            }
+
+            $sr++;
+        }
+        
+        return $response;
+    }
 }
