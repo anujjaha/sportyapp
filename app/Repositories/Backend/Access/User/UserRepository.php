@@ -544,4 +544,25 @@ class UserRepository extends BaseRepository
         
         return $this->model->whereIn('id', $normal)->get();
     }
+
+    public function getNews($gameId = null)
+    {
+        return [
+            [
+                'description'   => 'News ONe',
+                'image'         => 'http://cdn01.cdn.justjared.com/wp-content/uploads/headlines/2017/02/apprentice-top.jpg',
+                'news_time'     => '15 min ago'
+            ],
+            [
+                'description'   => 'News Two',
+                'image'         => 'http://cdn01.cdn.justjared.com/wp-content/uploads/headlines/2017/02/apprentice-top.jpg',
+                'news_time'     => '15 min ago'
+            ],
+            [
+                'description'   => 'News Three',
+                'image'         => 'http://cdn01.cdn.justjared.com/wp-content/uploads/headlines/2017/02/apprentice-top.jpg',
+                'news_time'     => '15 min ago'
+            ]
+        ];
+    }
 }

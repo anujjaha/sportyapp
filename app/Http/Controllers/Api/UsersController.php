@@ -184,6 +184,21 @@ class UsersController extends Controller
         
         return $this->ApiSuccessResponse($responseData);
     }
+
+    /**
+     * Get News Data
+     * 
+     * @param Request $user 
+     * @return json
+     */
+    public function getNewsData(Request $request)
+    {
+        $user = Auth::user();
+        
+        $newsData      = $this->users->getNews();
+        
+        return $this->ApiSuccessResponse($newsData);
+    }
     
     public function update(Request $request)
     {

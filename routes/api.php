@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
         Route::post('unfollow', 'UsersController@unFollow')->name('api.unfollow');
 
         Route::get('get-fans', 'UsersController@getFanData')->name('fan.getdata');
+        Route::get('get-news', 'UsersController@getNewsData')->name('news.getdata');
 
     });
 
