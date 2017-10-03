@@ -15,7 +15,7 @@ class UserTransformer extends Transformer
             'name'      => $this->nulltoBlank($data['name']),
             'email'     => $this->nulltoBlank($data['email']),
             'location'  => $this->nulltoBlank($data['location']),
-            'image'     => $data['image'] ? URL::to('/').'/uploads/users/'.$data['image'] : '',
+            'image'     => $data['image'] ? URL::to('/').'/uploads/users/'.$data['image'] : URL::to('/').'/uploads/users/default.png',
             'is_follow' => (isset($data['is_follow']) && $data['is_follow']) ? 1 : 0
         ];
     }
@@ -29,7 +29,7 @@ class UserTransformer extends Transformer
             'name'      => $this->nulltoBlank($data['name']),
             'email'     => $this->nulltoBlank($data['email']),
             'location'  => $this->nulltoBlank($data['location']),
-            'image'     => $data['image'] ? URL::to('/').'/uploads/users/'.$data['image'] : ''
+            'image'     => $data['image'] ? URL::to('/').'/uploads/users/'.$data['image'] : URL::to('/').'/uploads/users/default.png'
         ];
     }
 
@@ -52,7 +52,7 @@ class UserTransformer extends Transformer
                 'name'      => $this->nulltoBlank($item->name),
                 'email'     => $this->nulltoBlank($item->email),
                 'location'  => $this->nulltoBlank($item->location),
-                'image'     => $item->image ? URL::to('/').'/uploads/users/'.$item->image : '',
+                'image'     => $item->image ? URL::to('/').'/uploads/users/'.$item->image : URL::to('/').'/uploads/users/default.png',
                 'is_follow' => 1,
                 'follow_time' => "10 min ago"
             ];
