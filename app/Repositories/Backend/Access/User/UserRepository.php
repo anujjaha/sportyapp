@@ -18,6 +18,9 @@ use App\Repositories\Backend\Access\Role\RoleRepository;
 use App\Events\Backend\Access\User\UserPermanentlyDeleted;
 use App\Notifications\Frontend\Auth\UserNeedsConfirmation;
 use App\Repositories\FollowUser\EloquentFollowUserRepository;
+use App\Models\Team\Team;
+use App\Models\FollowTeam\FollowTeam;
+
 
 /**
  * Class UserRepository.
@@ -564,5 +567,60 @@ class UserRepository extends BaseRepository
                 'news_time'     => '15 min ago'
             ]
         ];
+    }
+
+    /**
+     * Get My Team
+     * 
+     * @param int $userId
+     * @return object
+     */
+    public function getMyTeam($userId = null)
+    {
+        $team = new Team;
+
+        return $team->whereIn('id', [1, 2])->get();
+    }
+
+    /**
+     * Get All Team
+     * 
+     * @return object
+     */
+    public function getAllTeam()
+    {
+        $team = new Team;
+
+        return $team->where('status', 1)->get();
+    }
+
+    public function followTeam($userId = null, $teamId = null)
+    {
+        if($userId && $teamId)
+        {
+            $followTeam = new FollowTeam;
+
+            $followTeam->where(['user_id' => $userId, 'team_id' => $teamId])->delete();
+
+            return $followTeam->create([
+                'user_id'   => $userId,
+                'team_id'   => $teamId
+            ]);
+
+        }
+        
+        return true;
+    }
+
+    public function unFollowTeam($userId = null, $teamId = null)
+    {
+         if($userId && $teamId)
+        {
+            $followTeam = new FollowTeam;
+
+            return $followTeam->where(['user_id' => $userId, 'team_id' => $teamId])->delete();
+        }
+        
+        return true;
     }
 }

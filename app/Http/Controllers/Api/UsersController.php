@@ -286,4 +286,77 @@ class UsersController extends Controller
             return $this->respondInternalError('Provide Valid prameters');
         }  
     }
+
+    public function getMyTeams(Request $request)
+    {
+        $user           = Auth::user();
+        $team           = $this->users->getMyTeam($user->id);
+        $responseData   = $this->userTransformer->myTeamTransform($team);
+
+        return $this->ApiSuccessResponse($responseData);
+    }
+
+    /**
+     * Get Fan Data
+     * 
+     * @param Request $request
+     * @return json
+     */
+    public function getAllTeams(Request $request)
+    {
+        $team           = $this->users->getAllTeam();
+        $responseData   = $this->userTransformer->teamTransform($team);
+
+        return $this->ApiSuccessResponse($responseData);
+    }
+
+    public function followTeam(Request $request)
+    {
+        if($request->get('team_id'))
+        {
+            $user = Auth::user();
+
+            $status = $this->users->followTeam($user->id, $request->get('team_id'));
+
+            if($status)
+            {
+                $responseData = [
+                    'success' => 'Follow Team Successfully !'
+                ];
+
+                return $this->ApiSuccessResponse($responseData, 'Follow Team Successfully !');
+            }
+        }
+
+        $error = [
+            'reason' => "Unable to Follow Team"
+        ];
+
+        return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !');
+    }
+
+    public function unFollowTeam(Request $request)
+    {
+        if($request->get('team_id'))
+        {
+            $user = Auth::user();
+
+            $status = $this->users->unFollowTeam($user->id, $request->get('team_id'));
+
+            if($status)
+            {
+                $responseData = [
+                    'success' => 'Un-Follow Team Successfully !'
+                ];
+
+                return $this->ApiSuccessResponse($responseData, 'Un-Follow Team Successfully !');
+            }
+        }
+
+        $error = [
+            'reason' => "Unable to Remove Team from Follow List"
+        ];
+
+        return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !');
+    }
 }

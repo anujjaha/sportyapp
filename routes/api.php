@@ -45,6 +45,12 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
         Route::get('get-fans', 'UsersController@getFanData')->name('fan.getdata');
         Route::get('get-news', 'UsersController@getNewsData')->name('news.getdata');
 
+        Route::get('get-my-teams', 'UsersController@getMyTeams')->name('my-team.getdata');
+        Route::get('get-all-teams', 'UsersController@getAllTeams')->name('my-team.getdata');
+
+        Route::post('follow-team', 'UsersController@followTeam')->name('follow-team.getdata');
+        Route::post('un-follow-team', 'UsersController@unFollowTeam')->name('un-follow-team.getdata');
+
     });
 
     Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () 

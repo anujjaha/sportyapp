@@ -61,4 +61,47 @@ class UserTransformer extends Transformer
 
         return $response;
     }
+
+    public function teamTransform($teams = null)
+    {
+        $response = [];
+        
+        if($teams)
+        {
+            foreach($teams as $item) 
+            {
+                $response[] = [
+                    'id'        => (int) $item->id,     
+                    'team_id'   => (int) $item->team_id,     
+                    'name'      => $item->name,
+                    'location'  => $item->location,
+                    'image'     => $item->image ? URL::to('/').'/uploads/team/'.$item->image : URL::to('/').'/uploads/team/default.png',
+                ];
+            }
+        }
+
+        return $response;
+    }
+
+    public function myTeamTransform($teams = null)
+    {
+        $response = [];
+        
+        if($teams)
+        {
+            foreach($teams as $item) 
+            {
+                $response[] = [
+                    'id'        => (int) $item->id,     
+                    'team_id'   => (int) $item->team_id,     
+                    'name'      => $item->name,
+                    'location'  => $item->location,
+                    'is_follow' => 1,
+                    'image'     => $item->image ? URL::to('/').'/uploads/team/'.$item->image : URL::to('/').'/uploads/team/default.png',
+                ];
+            }
+        }
+
+        return $response;
+    }
 }
