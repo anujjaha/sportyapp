@@ -34,6 +34,10 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 	public function create($postData)
 	{
 		$destinationFolder  = public_path().'/uploads/posts';
+
+		$postData['is_image'] = isset($postData['is_image']) ? $postData['is_image'] : 1;
+
+
         if (isset($postData['image']) && $postData['image']) { 
             $extension = $postData['image']->getClientOriginalExtension();
             $fileName = rand(11111,99999).'.'.$extension;
