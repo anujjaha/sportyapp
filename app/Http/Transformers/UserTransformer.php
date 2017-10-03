@@ -54,6 +54,7 @@ class UserTransformer extends Transformer
                 'location'  => $this->nulltoBlank($item->location),
                 'image'     => $item->image ? URL::to('/').'/uploads/users/'.$item->image : URL::to('/').'/uploads/users/default.png',
                 'is_follow' => 1,
+                'team_name' => 'Rams',
                 'follow_time' => "10 min ago"
             ];
         }
