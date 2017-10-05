@@ -305,7 +305,8 @@ class UsersController extends Controller
     public function getAllTeams(Request $request)
     {
         $team           = $this->users->getAllTeam();
-        $responseData   = $this->userTransformer->teamTransform($team);
+        $user           = Auth::user();
+        $responseData   = $this->userTransformer->teamTransform($user, $team);
 
         return $this->ApiSuccessResponse($responseData);
     }

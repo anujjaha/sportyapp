@@ -62,12 +62,14 @@ class UserTransformer extends Transformer
         return $response;
     }
 
-    public function teamTransform($teams = null)
+    public function teamTransform($user = null, $teams = null)
     {
         $response = [];
         
-        if($teams)
+        if($teams && $user)
         {
+            $userTeams  = $user->follow_teams()->pluck('team_id')->toArray();
+
             foreach($teams as $item) 
             {
                 $response[] = [
@@ -75,6 +77,7 @@ class UserTransformer extends Transformer
                     'team_id'   => (int) $item->team_id,     
                     'name'      => $item->name,
                     'location'  => $item->location,
+                    'is_follow' => in_array($item->team_id, $userTeams) ? 1 : 0,
                     'image'     => $item->image ? URL::to('/').'/uploads/team/'.$item->image : URL::to('/').'/uploads/team/default.png',
                 ];
             }
