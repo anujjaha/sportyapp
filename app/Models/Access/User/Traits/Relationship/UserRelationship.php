@@ -5,6 +5,7 @@ namespace App\Models\Access\User\Traits\Relationship;
 use App\Models\Event\Event;
 use App\Models\System\Session;
 use App\Models\Access\User\SocialLogin;
+use App\Models\FollowTeam\FollowTeam;
 
 /**
  * Class UserRelationship.
@@ -44,4 +45,14 @@ trait UserRelationship
     {
         return $this->hasMany(Event::class);
     }    
+
+    /**
+     * Follow Teams
+     * 
+     * @return mixed
+     */
+    public function follow_teams()
+    {
+        return $this->hasMany(FollowTeam::class);
+    }
 }

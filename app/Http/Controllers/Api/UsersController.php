@@ -290,7 +290,7 @@ class UsersController extends Controller
     public function getMyTeams(Request $request)
     {
         $user           = Auth::user();
-        $team           = $this->users->getMyTeam($user->id);
+        $team           = $this->users->getMyTeam($user);
         $responseData   = $this->userTransformer->myTeamTransform($team);
 
         return $this->ApiSuccessResponse($responseData);
@@ -329,7 +329,7 @@ class UsersController extends Controller
         }
 
         $error = [
-            'reason' => "Unable to Follow Team"
+            'message' => "Unable to Follow Team"
         ];
 
         return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !');
@@ -354,7 +354,7 @@ class UsersController extends Controller
         }
 
         $error = [
-            'reason' => "Unable to Remove Team from Follow List"
+            'message' => "Unable to Remove Team from Follow List"
         ];
 
         return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !');

@@ -575,11 +575,18 @@ class UserRepository extends BaseRepository
      * @param int $userId
      * @return object
      */
-    public function getMyTeam($userId = null)
+    public function getMyTeam($user)
     {
+        $teamIds = [];
+        
+        if($user)
+        {
+            $teamIds = $user->follow_teams()->pluck('id')->toArray();
+        }
+
         $team = new Team;
 
-        return $team->whereIn('id', [1, 2])->get();
+        return $team->whereIn('id', $teamIds)->get();
     }
 
     /**
