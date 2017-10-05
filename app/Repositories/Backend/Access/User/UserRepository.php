@@ -581,12 +581,12 @@ class UserRepository extends BaseRepository
         
         if($user)
         {
-            $teamIds = $user->follow_teams()->pluck('id')->toArray();
+            $teamIds = $user->follow_teams()->pluck('team_id')->toArray();
         }
 
         $team = new Team;
 
-        return $team->whereIn('id', $teamIds)->get();
+        return $team->whereIn('team_id', $teamIds)->get();
     }
 
     /**
