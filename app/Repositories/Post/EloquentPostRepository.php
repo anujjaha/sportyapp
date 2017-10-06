@@ -258,4 +258,14 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 
 		return false;
 	}
+
+	public function getAllDiscoverPosts($userId = null)
+	{
+		$posts = $this->model->with('post_likes')->orderBy('id', 'desc')->get()->filter(function($item)
+			{
+				return $item->postCount = count($item->post_likes);
+			});		
+
+		return $posts->sortByDesc('postCount');
+	}
 }

@@ -18,7 +18,7 @@ class PostTransformer extends Transformer
             'id'            => (int) $data['id'],
             'image'         => ($data['is_image'] == 1 && $data['image']) ?  URL::to('/').'/uploads/posts/'.$data['image'] : '',
             'video'         => ($data['is_image'] == 0 && $data['image']) ?  URL::to('/').'/uploads/posts/'.$data['image'] : '',
-            'is_image'      => $data['is_image'],
+            'is_image'      => $data['is_image'] ? $data['is_image'] : '',
             'description'   => $this->nulltoBlank($data['description']),
             'created_at'    => date('m/d/Y H:i:s', strtotime($data['created_at'])),
             'is_liked'      => (isset($data['is_liked']) && $data['is_liked']) ? 1 : 0
@@ -38,7 +38,7 @@ class PostTransformer extends Transformer
                 'id'                => (int) $post->id,
                 'image'             => ($post->is_image == 1 && $post->image) ?  URL::to('/').'/uploads/posts/'.$post->image : '',
                 'video'             => ($post->is_image == 0 && $post->image) ?  URL::to('/').'/uploads/posts/'.$post->image : '',
-                'is_image'          => $post->is_image,
+                'is_image'          => $post->is_image ? $post->is_image : '',
                 'description'       => $this->nulltoBlank($post->description),
                 'postCategory'      => $post->post_category,
                 'is_liked'          =>  0,

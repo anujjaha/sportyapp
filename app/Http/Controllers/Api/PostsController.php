@@ -268,4 +268,19 @@ class PostsController extends Controller
             return $this->respondInternalError('Provide Valid prameters');
         } 
     }
+
+    /**
+     * Discover List
+     * 
+     * @param Request $request
+     * @return json
+     */
+    public function discoverList(Request $request)
+    {
+        $userId         = Auth::user()->id;
+        $posts          = $this->respository->getAllDiscoverPosts($userId);
+        $responseData   = $this->postTransformer->postListWithLike($posts);
+
+        return $this->ApiSuccessResponse($responseData);        
+    }
 }

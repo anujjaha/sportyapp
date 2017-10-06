@@ -68,5 +68,8 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
         Route::post('unlike', 'PostsController@unLike')->name('api.unlike');
         Route::post('add-comment', 'PostsController@createComment')->name('api.create-comment');
         Route::post('delete-comment', 'PostsController@deleteComment')->name('api.delete-comment');
+
+
+        Route::get('discover-posts', 'PostsController@discoverList')->name('api.getlist');
     });
 });
