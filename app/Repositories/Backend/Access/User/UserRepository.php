@@ -18,6 +18,7 @@ use App\Repositories\Backend\Access\Role\RoleRepository;
 use App\Events\Backend\Access\User\UserPermanentlyDeleted;
 use App\Notifications\Frontend\Auth\UserNeedsConfirmation;
 use App\Repositories\FollowUser\EloquentFollowUserRepository;
+use App\Models\Post\Post;
 use App\Models\Team\Team;
 use App\Models\FollowTeam\FollowTeam;
 
@@ -648,6 +649,16 @@ class UserRepository extends BaseRepository
             $teamIds = FollowTeam::where('user_id', $user->id)->pluck('team_id')->toArray();
 
             return Team::whereIn('id', $teamIds)->get();
+        }
+
+        return false;
+    }
+
+    public function getUserPosts($user = null)
+    {
+        if($user)
+        {
+            return Post::where('user_id', $user->id)->get();
         }
 
         return false;

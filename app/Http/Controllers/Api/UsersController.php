@@ -368,9 +368,10 @@ class UsersController extends Controller
         $followTeam     = $this->users->getMyFollowTeams($user);
         $following      = $this->followUser->getMyFollowing($user);
         $followers      = $this->followUser->getMyFollowers($user);
-        
+        $posts          = $this->users->getUserPosts($user);
         
         $responseData   = [
+            'total_shots'       => count($posts),
             'follow_teams_count'=> count($team),
             'follow_teams'      => $followTeam ? $followTeam : [],
             'following_count'   => count($following),
