@@ -630,4 +630,26 @@ class UserRepository extends BaseRepository
         
         return true;
     }
+
+    public function getMyFollowTeam($user = null)
+    {
+        if($user)
+        {
+            return FollowTeam::where('user_id', $user->id)->get();
+        }
+
+        return false;
+    }
+
+    public function getMyFollowTeams($user = null)
+    {
+        if($user)
+        {
+            $teamIds = FollowTeam::where('user_id', $user->id)->pluck('team_id')->toArray();
+
+            return Team::whereIn('id', $teamIds)->get();
+        }
+
+        return false;
+    }
 }

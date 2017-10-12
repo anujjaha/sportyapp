@@ -116,4 +116,24 @@ class EloquentFollowUserRepository extends DbRepository implements FollowUserRep
         return false;
     }  
 
+    public function getMyFollowing($user = null)
+    {
+    	if($user)
+    	{
+    		return $this->model->where('user_id', $user->id)->get();
+    	}
+
+    	return false;
+    }
+
+    public function getMyFollowers($user = null)
+    {
+    	if($user)
+    	{
+    		return $this->model->where('follower_id', $user->id)->get();
+    	}
+
+    	return false;
+    }
+
 }

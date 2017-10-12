@@ -360,4 +360,23 @@ class UsersController extends Controller
 
         return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !');
     }
+
+    public function getMyProfile(Request $request)
+    {
+        $user           = Auth::user();
+        $team           = $this->users->getMyFollowTeam($user);
+        $followTeam     = $this->users->getMyFollowTeams($user);
+        $following      = $this->followUser->getMyFollowing($user);
+        $followers      = $this->followUser->getMyFollowers($user);
+        
+        
+        $responseData   = [
+            'follow_teams_count'=> count($team),
+            'follow_teams'      => $followTeam ? $followTeam : [],
+            'following_count'   => count($following),
+            'followers_count'   => count($followers)
+        ];
+
+        return $this->ApiSuccessResponse($responseData);        
+    }
 }
