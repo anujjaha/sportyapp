@@ -27,7 +27,8 @@ class Post extends BaseModel
         'user_id',
         'image',
         'description',
-        'is_image'
+        'is_image',
+        'is_wowza'
     ];
 
     /**
