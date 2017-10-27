@@ -21,7 +21,7 @@ use App\Repositories\FollowUser\EloquentFollowUserRepository;
 use App\Models\Post\Post;
 use App\Models\Team\Team;
 use App\Models\FollowTeam\FollowTeam;
-
+use App\Models\FanMeter\FanMeter;
 
 /**
  * Class UserRepository.
@@ -659,6 +659,53 @@ class UserRepository extends BaseRepository
         if($user)
         {
             return Post::where('user_id', $user->id)->get();
+        }
+
+        return false;
+    }
+
+    public function getTeamRatio($gameId = null)
+    {
+        if($gameId)
+        {
+            $homeCount  = 0;
+            $awayCount  = 0;
+            $fanMeters  = FanMeter::where('game_id', $gameId)->get();
+
+            foreach($fanMeters as $fanMeter)
+            {
+                if($fanMeter->follow_team == $fanMeter->home_team_id)    
+                {
+                    $homeCount++;
+                }
+
+                if($fanMeter->follow_team == $fanMeter->away_team_id)    
+                {
+                    $awayCount++;
+                }
+            }
+
+            return [
+                'gameId'    => $gameId,
+                'homeCount' => $homeCount,
+                'awayCount' => $awayCount
+            ];
+        }
+        
+        return false;
+    }
+
+    public function addTeamRatio($userId = null, $input = array())
+    {
+        if($userId && count($input))
+        {
+            return FanMeter::create([
+                'user_id'       => (int) $userId,
+                'game_id'       => (int) $input['gameId'],
+                'home_team_id'  => (int) $input['homeTeamId'],
+                'away_team_id'  => (int) $input['awayTeamId'],
+                'follow_team'   => (int) $input['followTeam']
+            ]);
         }
 
         return false;

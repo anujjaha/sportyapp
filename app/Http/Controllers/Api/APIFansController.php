@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Transformers\FansTransformer;
+//use App\Http\Transformers\FansTransformer;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Repositories\Backend\Access\User\UserRepository;
+use Auth;
 
 class APIFansController extends BaseApiController 
 {   
@@ -26,7 +27,7 @@ class APIFansController extends BaseApiController
         parent::__construct();
 
         $this->respository      = new UserRepository;
-        $this->eventTransformer = new FansTransformer;
+        //$this->eventTransformer = new FansTransformer;
     }
 
     /**
@@ -45,5 +46,35 @@ class APIFansController extends BaseApiController
 
         // if no errors are encountered we can return a JWT
         return response()->json($responseData);
+    }
+
+    public function teamRatio(Request $request)
+    {
+        if($request->get('gameId'))
+        {
+            $response = $this->respository->getTeamRatio($request->get('gameId'));
+
+            return $this->ApiSuccessResponse($response);
+        }
+        
+        return $this->respondInternalError('Provide Valid Game Id');        
+    }
+
+    public function addTeamRatio(Request $request)
+    {
+        if($request->get('gameId') && $request->get('followTeam'))
+        {
+            $userId = Auth::user()->id;
+            $status = $this->respository->addTeamRatio($userId, $request->all());
+
+            if($status)
+            {
+                $response = $this->respository->getTeamRatio($request->get('gameId'));
+
+                return $this->ApiSuccessResponse($response);
+            }
+        }
+        
+        return $this->respondInternalError('Provide Valid Game Id');        
     }
 }

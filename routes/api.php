@@ -32,6 +32,9 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
     Route::get('sporty-fans', 'APIFansController@index')->name('fans.index');
 
+    Route::post('sporty-fans/get-team-ratio', 'APIFansController@teamRatio')->name('fans.get-team-ratio');
+    Route::post('sporty-fans/add-team-ratio', 'APIFansController@addTeamRatio')->name('fans.add-team-ratio');
+
 
 
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () 
