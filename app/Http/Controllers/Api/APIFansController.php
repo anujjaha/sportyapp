@@ -97,4 +97,24 @@ class APIFansController extends BaseApiController
         
         return $this->respondInternalError('Provide Valid Params or Challenge Already Exists !');     
     }
+
+    public function checkFanChallenge(Request $request)
+    {
+        if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
+        {
+            $userId = Auth::user()->id;
+            $status = $this->respository->checkFanChallenge($userId, $request->all());
+
+            if($status)
+            {
+                $response = [
+                    'message' => "Fan Challenge Found !"
+                ];
+
+                return $this->ApiSuccessResponse($response);
+            }
+        }
+        
+        return $this->respondInternalError('No Fan Challenge Found!');      
+    }
 }

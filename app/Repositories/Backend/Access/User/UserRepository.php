@@ -738,4 +738,24 @@ class UserRepository extends BaseRepository
 
         return false;
     }
+
+
+    public function checkFanChallenge($userId = null, $input = array())
+    {
+         if($userId && count($input))
+        {
+            $challenge = FanChallenge::where([
+                'game_id'       => $input['gameId'],
+                'home_team_id'  => $input['homeTeamId'],
+                'away_team_id'  => $input['awayTeamId']
+            ])->first();
+
+            if($challenge)
+            {
+                return true;
+            }
+        }   
+
+        return false; 
+    }
 }
