@@ -22,6 +22,7 @@ use App\Models\Post\Post;
 use App\Models\Team\Team;
 use App\Models\FollowTeam\FollowTeam;
 use App\Models\FanMeter\FanMeter;
+use App\Models\FanChallenge\FanChallenge;
 
 /**
  * Class UserRepository.
@@ -707,6 +708,33 @@ class UserRepository extends BaseRepository
                 'follow_team'   => (int) $input['followTeam']
             ]);
         }
+
+        return false;
+    }
+
+    public function createFanChallenge($userId = null, $input = array())
+    {
+        if($userId && count($input))
+        {
+            $challenge = FanChallenge::where([
+                'game_id'       => $input['gameId'],
+                'home_team_id'  => $input['homeTeamId'],
+                'away_team_id'  => $input['awayTeamId']
+            ])->first();
+
+            if($challenge)
+            {
+                return false;
+            }
+            
+             return FanChallenge::create([
+                'user_id'       => $userId,
+                'game_id'       => $input['gameId'],
+                'home_team_id'  => $input['homeTeamId'],
+                'away_team_id'  => $input['awayTeamId']
+            ]);
+
+        }   
 
         return false;
     }

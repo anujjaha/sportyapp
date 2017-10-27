@@ -268,4 +268,41 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 
 		return $posts->sortByDesc('postCount');
 	}
+
+	public function createFanChallengePost($postData)
+	{
+		$destinationFolder  = public_path().'/uploads/posts';
+
+		$postData['is_image'] = isset($postData['is_image']) ? $postData['is_image'] : 1;
+
+
+        if (isset($postData['image']) && $postData['image']) { 
+            $extension = $postData['image']->getClientOriginalExtension();
+            $fileName = rand(11111,99999).'.'.$extension;
+            if($postData['image']->move($destinationFolder, $fileName))
+            {
+                $postData['image'] = $fileName;
+            }                       
+        }
+
+        $postData['game_id'] = $postData['gameId'];
+        $postData['home_team_id'] = $postData['homeTeamId'];
+        $postData['away_team_id'] = $postData['awayTeamId'];
+
+		return $this->model->create($postData);		
+	}
+
+	public function getAllFanChallengePosts($gameId = null , $homeTeamId = null, $awayTeamId = null)
+	{
+		if($gameId && $homeTeamId && $awayTeamId)
+		{
+			return $this->model->with('post_likes')->where([
+				'game_id' 		=> $gameId,
+				'home_team_id' 	=> $homeTeamId,
+				'away_team_id' 	=> $awayTeamId
+			])->orderBy('id', 'desc')->get();			
+		}
+
+		return false;
+	}
 }

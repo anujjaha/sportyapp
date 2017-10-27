@@ -28,7 +28,10 @@ class Post extends BaseModel
         'image',
         'description',
         'is_image',
-        'is_wowza'
+        'is_wowza',
+        'game_id',
+        'home_team_id',
+        'away_team_id'
     ];
 
     /**

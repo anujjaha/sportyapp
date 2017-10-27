@@ -283,4 +283,45 @@ class PostsController extends Controller
 
         return $this->ApiSuccessResponse($responseData);        
     }
+
+    public function createFanChallengePost(Request $request)
+    {
+        if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
+        {
+            $postData = $request->all();
+
+            if(isset($postData['description']) && $postData['description'])
+            {
+                $postData['user_id']    = Auth::user()->id;
+                $response               = $this->respository->createFanChallengePost($postData);
+                if($response)
+                {
+                    $this->setSuccessMessage("Post Successfully Created");
+                    return $this->ApiSuccessResponse([]);
+                }
+                else
+                {
+                    return $this->respondInternalError('Error in saving Post');
+                }
+            }
+        }
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        }        
+    }
+
+    public function getFanChallengePost(Request $request)
+    {
+        if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
+        {
+            $userId         = Auth::user()->id;
+            $posts          = $this->respository->getAllFanChallengePosts($request->get('gameId'), $request->get('homeTeamId'), $request->get('awayTeamId'));
+            $responseData   = $this->postTransformer->postListWithLike($posts);
+
+            return $this->ApiSuccessResponse($responseData);        
+        }
+
+        return $this->respondInternalError('Provide Valid prameters');
+    }
 }

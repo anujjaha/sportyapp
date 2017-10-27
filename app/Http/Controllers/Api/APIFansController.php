@@ -77,4 +77,24 @@ class APIFansController extends BaseApiController
         
         return $this->respondInternalError('Provide Valid Game Id');        
     }
+
+    public function createFanChallenge(Request $request)
+    {
+        if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
+        {
+            $userId = Auth::user()->id;
+            $status = $this->respository->createFanChallenge($userId, $request->all());
+
+            if($status)
+            {
+                $response = [
+                    'message' => "Fan Challenge created Successfully!"
+                ];
+
+                return $this->ApiSuccessResponse($response);
+            }
+        }
+        
+        return $this->respondInternalError('Provide Valid Params or Challenge Already Exists !');     
+    }
 }

@@ -36,6 +36,11 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     Route::post('sporty-fans/add-team-ratio', 'APIFansController@addTeamRatio')->name('fans.add-team-ratio');
 
 
+    Route::post('sporty-fans-challenge/create', 'APIFansController@createFanChallenge')->name('fans-challenge.create');
+    Route::post('sporty-fans-challenge/create-post', 'PostsController@createFanChallengePost')->name('fans-challenge.create-post');
+    Route::post('sporty-fans-challenge/get-posts', 'PostsController@getFanChallengePost')->name('fans-challenge.get-post');
+
+
 
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () 
     {
