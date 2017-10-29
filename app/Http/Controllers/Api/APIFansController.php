@@ -108,7 +108,17 @@ class APIFansController extends BaseApiController
             if($status)
             {
                 $response = [
-                    'message' => "Fan Challenge Found !"
+                    'fanFound'  => 1,
+                    'message'   => "Fan Challenge Found !"
+                ];
+
+                return $this->ApiSuccessResponse($response);
+            }
+            else
+            {
+                $response = [
+                    'fanFound'  => 0,
+                    'message'   => "No Fan Challenge Found !"
                 ];
 
                 return $this->ApiSuccessResponse($response);
