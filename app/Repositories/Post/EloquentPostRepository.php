@@ -153,7 +153,7 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
      */
    	public function getAllPosts($userId = null)
    	{
-   		return $this->model->with('post_likes')->orderBy('id', 'desc')->get();
+   		return $this->model->with('post_likes')->where(['home_team_id' => NULL, 'away_team_id' => NULL])->orderBy('id', 'desc')->get();
    	}
 
    	/**

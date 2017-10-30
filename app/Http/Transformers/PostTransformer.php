@@ -17,12 +17,13 @@ class PostTransformer extends Transformer
         return [
             'id'            => (int) $data['id'],
             'image'         => ($data['is_image'] == 1 && $data['image']) ?  URL::to('/').'/uploads/posts/'.$data['image'] : '',
-            'video'         => ($data['is_image'] == 0 && $data['image']) ?  URL::to('/').'/uploads/posts/'.$data['image'] : '',
+            'video'         => (isset($data['is_wowza']) && $data['is_wowza'] == 1) ? $data['description'] : URL::to('/').'/uploads/posts/'.$data['image'],
             'videoImg'      => ($data['is_image'] == 1 && $data['image']) || ($data['is_wowza'] == 1)  ? URL::to('/').'/uploads/users/video-thumbnail.png' : '',
             'is_image'      => $data['is_image'] ? $data['is_image'] : '',
-            'description'   => $this->nulltoBlank($data['description']),
+            'description'   => (isset($data['is_wowza']) && $data['is_wowza'] == 1) ? : $this->nulltoBlank($data['description']),
             'created_at'    => date('m/d/Y H:i:s', strtotime($data['created_at'])),
-            'is_liked'      => (isset($data['is_liked']) && $data['is_liked']) ? 1 : 0
+            'is_liked'      => (isset($data['is_liked']) && $data['is_liked']) ? 1 : 0,
+            'is_wowza'      => (isset($data['is_wowza']) && $data['is_wowza'] == 1) ? 1 : 0
         ];
     }
 
@@ -38,10 +39,11 @@ class PostTransformer extends Transformer
             $response[$sr] = [  
                 'id'                => (int) $post->id,
                 'image'             => ($post->is_image == 1 && $post->image) ?  URL::to('/').'/uploads/posts/'.$post->image : '',
-                'video'             => ($post->is_image == 0 && $post->image) ?  URL::to('/').'/uploads/posts/'.$post->image : '',
+                'video'             => (isset($post->is_wowza) && $post->is_wowza == 1) ? $post->description : ($post->image) ? URL::to('/').'/uploads/posts/'.$post->image : '',
                 'is_image'          => $post->is_image ? $post->is_image : '',
                 'videoImg'          => ($post->is_image == 0 && $post->image) || $post->is_wowza == 1 ? URL::to('/').'/uploads/users/video-thumbnail.png' : '',
                 'description'       => $this->nulltoBlank($post->description),
+                 'is_wowza'         => (isset($post->is_wowza) && $post->is_wowza == 1) ? 1 :0,
                 'postCategory'      => $post->post_category,
                 'is_liked'          =>  0,
                 'created_at'        => date('m/d/Y H:i:s', strtotime($post->created_at)),
