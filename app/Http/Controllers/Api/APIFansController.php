@@ -50,6 +50,11 @@ class APIFansController extends BaseApiController
 
     public function teamRatio(Request $request)
     {
+        if(! $request->get('gameId')
+        {
+            $request->get('gameId') = 0;
+        }
+
         if($request->get('gameId'))
         {
             $response = $this->respository->getTeamRatio($request->get('gameId'));
@@ -62,6 +67,11 @@ class APIFansController extends BaseApiController
 
     public function addTeamRatio(Request $request)
     {
+        if(! $request->get('gameId')
+        {
+            $request->get('gameId') = 0;
+        }
+
         if($request->get('gameId') && $request->get('followTeam'))
         {
             $userId = Auth::user()->id;
@@ -80,6 +90,11 @@ class APIFansController extends BaseApiController
 
     public function createFanChallenge(Request $request)
     {
+        if(! $request->get('gameId')
+        {
+            $request->get('gameId') = 0;
+        }
+
         if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
         {
             $userId = Auth::user()->id;
@@ -100,6 +115,11 @@ class APIFansController extends BaseApiController
 
     public function checkFanChallenge(Request $request)
     {
+        if(! $request->get('gameId')
+        {
+            $request->get('gameId') = 0;
+        }
+        
         if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
         {
             $userId = Auth::user()->id;
