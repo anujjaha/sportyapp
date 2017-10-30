@@ -76,7 +76,7 @@ class UserTransformer extends Transformer
                     'id'        => (int) $item->id,     
                     'team_id'   => (int) $item->team_id,     
                     'name'      => $item->name,
-                    'location'  => $item->location,
+                    'location'  => $item->location ? $item->location : '',
                     'is_follow' => in_array($item->team_id, $userTeams) ? 1 : 0,
                     'image'     => $item->image ? URL::to('/').'/uploads/team/'.$item->image : URL::to('/').'/uploads/team/default.png',
                 ];
@@ -98,7 +98,7 @@ class UserTransformer extends Transformer
                     'id'        => (int) $item->id,     
                     'team_id'   => (int) $item->team_id,     
                     'name'      => $item->name,
-                    'location'  => $item->location,
+                    'location'  => $item->location ? $item->location : '',
                     'is_follow' => 1,
                     'image'     => $item->image ? URL::to('/').'/uploads/team/'.$item->image : URL::to('/').'/uploads/team/default.png',
                 ];
