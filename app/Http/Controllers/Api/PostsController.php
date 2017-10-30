@@ -286,6 +286,11 @@ class PostsController extends Controller
 
     public function createFanChallengePost(Request $request)
     {
+        if(! $request->get('gameId'))
+        {
+            $request->request->add(['gameId' =>0]);
+        }
+        
         if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
         {
             $postData = $request->all();
@@ -313,6 +318,11 @@ class PostsController extends Controller
 
     public function getFanChallengePost(Request $request)
     {
+        if(! $request->get('gameId'))
+        {
+            $request->request->add(['gameId' =>0]);
+        }
+
         if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
         {
             $userId         = Auth::user()->id;
