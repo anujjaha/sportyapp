@@ -56,6 +56,7 @@ class PostTransformer extends Transformer
                     'name'      => $post->user->name,
                     'username'  => $post->user->username,
                     'email'     => $post->user->email,
+                    'image'     => $post->user->image ? URL::to('/').'/uploads/users/'.$post->user->image : URL::to('/').'/uploads/users/default.png',
                     'location'  => $post->user->location
                 ],
             ];
