@@ -146,4 +146,35 @@ class APIFansController extends BaseApiController
         
         return $this->respondInternalError('No Fan Challenge Found!');      
     }
+
+    public function checkFanMeter(Request $request)
+    {
+        if(! $request->get('gameId'))
+        {
+            $request->request->add(['gameId' => 0]);
+        }
+
+        if($request->get('gameId') && $request->get('homeTeamId') && $request->get('awayTeamId'))
+        {
+            $userId = Auth::user()->id;
+            $status = $this->respository->checkFanMeter($userId, $request->get('gameId'), $request->get('homeTeamId'), $request->get('awayTeamId'));
+
+            if($status)
+            {
+                $response = [
+                    'fanMeterFound' => 1,
+                    'message'       => "Fan Meter Found!"
+                ];                
+            }
+
+            $response = [
+                'fanMeterFound' => 0,
+                'message'       => "Fan Meter Not Found!"
+            ];    
+
+            return $this->ApiSuccessResponse($response);            
+        }
+
+        return $this->respondInternalError('Invalid Inputs');      
+    }
 }

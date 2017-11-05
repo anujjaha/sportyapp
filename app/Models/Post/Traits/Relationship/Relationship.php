@@ -2,6 +2,7 @@
 
 use App\Models\Access\User\User;
 use App\Models\Post\PostComment;
+use App\Models\PostGif\PostGif;
 
 trait Relationship
 {
@@ -32,5 +33,15 @@ trait Relationship
 	public function post_comments()
 	{
 	    return $this->hasMany(PostComment::class, 'post_id');
+	}
+
+	/**
+	 * Post Gif
+	 * 
+	 * @return mixed
+	 */
+	public function post_gifs()
+	{
+	    return $this->hasMany(PostGif::class, 'post_id');
 	}
 }

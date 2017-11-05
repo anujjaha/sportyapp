@@ -334,4 +334,23 @@ class PostsController extends Controller
 
         return $this->respondInternalError('Provide Valid prameters');
     }
+
+    public function addGif(Request $request)
+    {
+        $user = Auth::user();
+
+        if($request->get('post_id') && $request->get('gif_id'))
+        {
+            $postGif = $this->respository->addGif($user->id, $request->get('post_id'), $request->get('gif_id'));
+
+            if($postGif)
+            {
+                $this->setSuccessMessage("Added GIF Successfully");
+                return $this->ApiSuccessResponse([]);
+            }
+               
+        }
+        
+        return $this->respondInternalError('Error in Adding Gif Post');
+    }
 }

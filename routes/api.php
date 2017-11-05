@@ -31,7 +31,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
 
     Route::get('sporty-fans', 'APIFansController@index')->name('fans.index');
-
+    Route::post('sporty-fans/check', 'APIFansController@checkFanMeter')->name('fans.check-fan-meter');
     Route::post('sporty-fans/get-team-ratio', 'APIFansController@teamRatio')->name('fans.get-team-ratio');
     Route::post('sporty-fans/add-team-ratio', 'APIFansController@addTeamRatio')->name('fans.add-team-ratio');
 
@@ -43,6 +43,10 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
 
 
+
+
+Route::get('sporty-gifs', 'UsersController@getGifs')->name('sporty.gifs');
+
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () 
     {
         Route::get('getdata', 'UsersController@getData')->name('api.getdata');
@@ -53,6 +57,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
         Route::get('get-fans', 'UsersController@getFanData')->name('fan.getdata');
         Route::get('get-news', 'UsersController@getNewsData')->name('news.getdata');
+        Route::get('user-followers', 'UsersController@getFollowers')->name('news.getdata');
 
 
         Route::get('get-profile', 'UsersController@getMyProfile')->name('my-team.getprofile');
@@ -80,6 +85,8 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
         Route::post('unlike', 'PostsController@unLike')->name('api.unlike');
         Route::post('add-comment', 'PostsController@createComment')->name('api.create-comment');
         Route::post('delete-comment', 'PostsController@deleteComment')->name('api.delete-comment');
+
+        Route::post('add-gif', 'PostsController@addGif')->name('posts.add-gif');
 
 
         Route::get('discover-posts', 'PostsController@discoverList')->name('api.getlist');

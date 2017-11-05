@@ -5,6 +5,7 @@ use App\Models\Post\PostComment;
 use App\Models\Post\PostLike;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
+use App\Models\PostGif\PostGif;
 
 class EloquentPostRepository extends DbRepository implements PostRepositoryContract
 {
@@ -301,6 +302,22 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 				'home_team_id' 	=> $homeTeamId,
 				'away_team_id' 	=> $awayTeamId
 			])->orderBy('id', 'desc')->get();			
+		}
+
+		return false;
+	}
+
+	public function addGif($userId, $postId, $gifId)
+	{
+		if($userId && $postId && $gifId)
+		{
+			PostGif::where(['user_id' => $userId, 'post_id' => $postId, 'gif_id' => $gifId])->delete();
+
+			return postGif::create([
+				'user_id' => $userId,
+				'post_id' => $postId,
+				'gif_id'  => $gifId
+			]);
 		}
 
 		return false;

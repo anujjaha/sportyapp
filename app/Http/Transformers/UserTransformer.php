@@ -107,4 +107,45 @@ class UserTransformer extends Transformer
 
         return $response;
     }
+
+    public function getMyFollowers($followers)
+    {
+        $response = [];
+
+        if($followers)
+        {
+            foreach($followers as $follower)
+            {
+                $response[] = [
+                    'user_id' => $follower->user->id,
+                    'name'    => $follower->user->name,
+                    'image'   => $follower->user->image ? URL::to('/').'/uploads/team/'.$follower->user->image : URL::to('/').'/uploads/team/default.png'
+
+                ];
+            }
+        }
+        
+
+        return $response;
+    }
+
+    public function getGifs($gifs)
+    {
+        $response = [];
+
+        if($gifs)
+        {
+            foreach($gifs as $gif)
+            {
+                $response[] = [
+                    'gif_Id'     => $gif->id,
+                    'gif_Image'  =>  URL::to('/').'/uploads/gif/'.$gif->gif
+                ];
+            }
+        }
+
+        return $response;
+
+
+    }
 }

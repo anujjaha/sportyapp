@@ -51,6 +51,7 @@ class PostTransformer extends Transformer
                 'postCommentCount'  => isset($post->post_comments) ? count($post->post_comments) : 0,
                 'postLikeUser'      => [],
                 'postComments'      => [],
+                'postGifs'      => [],
                 'postCreator'       => [
                     'userId'    => $post->user->id,
                     'name'      => $post->user->name,
@@ -60,6 +61,20 @@ class PostTransformer extends Transformer
                     'location'  => $post->user->location
                 ],
             ];
+
+            if(isset($post->post_gifs))
+            {
+                foreach($post->post_gifs as $gif)
+                {
+                    if($gif->gif)
+                    {
+                        $response[$sr]['postGifs'][] = [
+                            'gif_id'    => $gif->gif->id,
+                            'gif_Image' => URL::to('/').'/uploads/gif/'.$gif->gif->gif
+                        ];
+                    }
+                }
+            }
 
             if(isset($post->post_comments))
             {

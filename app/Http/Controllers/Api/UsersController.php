@@ -18,6 +18,7 @@ use Tymon\JWTAuthExceptions\JWTException;
 use Auth;
 use App\Repositories\FollowUser\EloquentFollowUserRepository;
 
+
 class UsersController extends Controller 
 {
     protected $userTransformer;
@@ -380,4 +381,22 @@ class UsersController extends Controller
 
         return $this->ApiSuccessResponse($responseData);        
     }
+
+    public function getFollowers(Request $request)
+    {
+        $user           = Auth::user();
+        $followers      = $this->followUser->getMyFollowers($user);
+        $responseData   = $this->userTransformer->getMyFollowers($followers);
+
+        return $this->ApiSuccessResponse($responseData);        
+    }
+
+    public function getGifs(Request $request)
+    {
+        $gifs = $this->users->getAllGif();
+        $responseData   = $this->userTransformer->getGifs($gifs);
+        
+        return $this->ApiSuccessResponse($responseData);        
+    }
 }
+

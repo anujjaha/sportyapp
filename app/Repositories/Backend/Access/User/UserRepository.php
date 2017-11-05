@@ -23,6 +23,7 @@ use App\Models\Team\Team;
 use App\Models\FollowTeam\FollowTeam;
 use App\Models\FanMeter\FanMeter;
 use App\Models\FanChallenge\FanChallenge;
+use App\Models\Gif\Gif;
 
 /**
  * Class UserRepository.
@@ -757,5 +758,22 @@ class UserRepository extends BaseRepository
         }   
 
         return false; 
+    }
+
+    public function getAllGif()
+    {
+        return Gif::where('status', 1)->get();
+    }
+
+    public function checkFanMeter($userId, $gameId, $homeTeamId, $awayTeamId)
+    {
+        $fanMeter = FanMeter::where(['user_id' => $userId, 'game_id' => $gameId, 'home_team_id' => $homeTeamId, 'away_team_id' =>  $awayTeamId)->first();
+
+        if($fanMeter)
+        {
+            return $fanMeter;
+        }
+
+        return false;
     }
 }
