@@ -117,9 +117,9 @@ class UserTransformer extends Transformer
             foreach($followers as $follower)
             {
                 $response[] = [
-                    'user_id' => $follower->user->id,
-                    'name'    => $follower->user->name,
-                    'image'   => $follower->user->image ? URL::to('/').'/uploads/team/'.$follower->user->image : URL::to('/').'/uploads/team/default.png'
+                    'user_id'   => $follower->user->id,
+                    'name'      => $follower->user->name,
+                    'image'     => $follower->user->image ? URL::to('/').'/uploads/team/'.$follower->user->image : URL::to('/').'/uploads/team/default.png'
 
                 ];
             }

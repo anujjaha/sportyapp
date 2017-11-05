@@ -776,4 +776,34 @@ class UserRepository extends BaseRepository
 
         return false;
     }
+
+    public function getUserProfile($userId = null)
+    {
+        if($userId)
+        {
+            $user = $this->model->where('id', $userId)->first();
+
+            if($user)
+            {
+                return $user;
+            }
+        }
+
+        return false;
+    }
+
+    public function getUserById($userId = null)
+    {
+        if($userId)
+        {
+            $user = $this->model->find($userId);
+
+            if($user)
+            {
+                return $user;
+            }
+        }
+
+        return false;
+    }
 }

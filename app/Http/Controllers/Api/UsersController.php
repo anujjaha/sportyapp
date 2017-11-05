@@ -394,9 +394,47 @@ class UsersController extends Controller
     public function getGifs(Request $request)
     {
         $gifs = $this->users->getAllGif();
-        $responseData   = $this->userTransformer->getGifs($gifs);
+        $responseData   = $this->userTransformer->getFo($gifs);
         
         return $this->ApiSuccessResponse($responseData);        
+    }
+
+    public function getUserProfile(Request $request)
+    {
+        if($request->get('user_id'))
+        {
+            $userData = $this->users->getUserProfile($request->get('user_id'));
+            $responseData = $this->userTransformer->transform($userData);
+
+            return $this->ApiSuccessResponse($responseData);
+        }
+
+        return $this->respondInternalError('Provide Valid Params!');     
+    }
+
+    public function getUserProfileData(Request $request)
+    {
+        if($request->get('user_id'))
+        {
+            $user           = $this->users->getUserById($request->get('user_id'));
+            $team           = $this->users->getMyFollowTeam($user);
+            $followTeam     = $this->users->getMyFollowTeams($user);
+            $following      = $this->followUser->getMyFollowing($user);
+            $followers      = $this->followUser->getMyFollowers($user);
+            $posts          = $this->users->getUserPosts($user);
+            
+            $responseData   = [
+                'total_shots'       => count($posts),
+                'follow_teams_count'=> count($team),
+                'follow_teams'      => $followTeam ? $followTeam : [],
+                'following_count'   => count($following),
+                'followers_count'   => count($followers)
+            ];
+
+            return $this->ApiSuccessResponse($responseData);        
+        }
+
+        return $this->respondInternalError('Provide Valid Params!');     
     }
 }
 

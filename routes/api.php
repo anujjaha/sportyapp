@@ -57,10 +57,12 @@ Route::get('sporty-gifs', 'UsersController@getGifs')->name('sporty.gifs');
 
         Route::get('get-fans', 'UsersController@getFanData')->name('fan.getdata');
         Route::get('get-news', 'UsersController@getNewsData')->name('news.getdata');
-        Route::get('user-followers', 'UsersController@getFollowers')->name('news.getdata');
+        Route::get('user-followers', 'UsersController@getFollowers')->name('followers');
 
 
         Route::get('get-profile', 'UsersController@getMyProfile')->name('my-team.getprofile');
+        Route::post('get-user-profile', 'UsersController@getUserProfile')->name('my-team.get-other-user-profile');
+        Route::post('get-user-profile-data', 'UsersController@getUserProfileData')->name('my-team.get-other-user-profile-data');
 
         Route::get('get-my-teams', 'UsersController@getMyTeams')->name('my-team.getdata');
         Route::get('get-all-teams', 'UsersController@getAllTeams')->name('my-team.getdata');
