@@ -767,7 +767,7 @@ class UserRepository extends BaseRepository
 
     public function checkFanMeter($userId, $gameId, $homeTeamId, $awayTeamId)
     {
-        $fanMeter = FanMeter::where(['user_id' => $userId, 'game_id' => $gameId, 'home_team_id' => $homeTeamId, 'away_team_id' =>  $awayTeamId)->first();
+        $fanMeter = FanMeter::where(['user_id' => $userId, 'game_id' => $gameId, 'home_team_id' => $homeTeamId, 'away_team_id' =>  $awayTeamId])->first();
 
         if($fanMeter)
         {
