@@ -311,13 +311,23 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 	{
 		if($userId && $postId && $gifId)
 		{
-			PostGif::where(['user_id' => $userId, 'post_id' => $postId, 'gif_id' => $gifId])->delete();
+			$deleteStatus = $this->removeGif($userId, $postId, $gifId);
 
 			return postGif::create([
 				'user_id' => $userId,
 				'post_id' => $postId,
 				'gif_id'  => $gifId
 			]);
+		}
+
+		return false;
+	}
+
+	public function removeGif($userId, $postId, $gifId)
+	{
+		if($userId && $postId && $gifId)
+		{
+			return PostGif::where(['user_id' => $userId, 'post_id' => $postId, 'gif_id' => $gifId])->delete();
 		}
 
 		return false;

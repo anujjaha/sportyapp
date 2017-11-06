@@ -353,4 +353,21 @@ class PostsController extends Controller
         
         return $this->respondInternalError('Error in Adding Gif Post');
     }
+
+    public function removeGif(Request $request)
+    {
+        $user = Auth::user();
+
+        if($request->get('post_id') && $request->get('gif_id'))
+        {
+            $postGif = $this->respository->removeGif($user->id, $request->get('post_id'), $request->get('gif_id'));
+
+            if($postGif)
+            {
+                $this->setSuccessMessage("Added GIF Successfully");
+                return $this->ApiSuccessResponse([]);
+            }
+               
+        }
+    }
 }

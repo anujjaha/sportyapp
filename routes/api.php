@@ -42,10 +42,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     Route::post('sporty-fans-challenge/get-posts', 'PostsController@getFanChallengePost')->name('fans-challenge.get-post');
 
 
-
-
-
-Route::get('sporty-gifs', 'UsersController@getGifs')->name('sporty.gifs');
+    Route::get('sporty-gifs', 'UsersController@getGifs')->name('sporty.gifs');
 
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () 
     {
@@ -90,7 +87,7 @@ Route::get('sporty-gifs', 'UsersController@getGifs')->name('sporty.gifs');
 
         Route::post('add-gif', 'PostsController@addGif')->name('posts.add-gif');
 
-
+        Route::post('remove-gif', 'PostsController@removeGif')->name('posts.remove-gif');
         Route::get('discover-posts', 'PostsController@discoverList')->name('api.getlist');
     });
 });
