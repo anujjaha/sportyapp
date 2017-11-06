@@ -6,6 +6,7 @@ use App\Models\Event\Event;
 use App\Models\System\Session;
 use App\Models\Access\User\SocialLogin;
 use App\Models\FollowTeam\FollowTeam;
+use App\Models\Location\Location;
 
 /**
  * Class UserRelationship.
@@ -54,5 +55,10 @@ trait UserRelationship
     public function follow_teams()
     {
         return $this->hasMany(FollowTeam::class);
+    }
+
+    public function user_location()
+    {
+        return $this->hasOne(Location::class);    
     }
 }

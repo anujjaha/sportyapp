@@ -24,6 +24,7 @@ use App\Models\FollowTeam\FollowTeam;
 use App\Models\FanMeter\FanMeter;
 use App\Models\FanChallenge\FanChallenge;
 use App\Models\Gif\Gif;
+use App\Models\Location\Location;
 
 /**
  * Class UserRepository.
@@ -805,5 +806,27 @@ class UserRepository extends BaseRepository
         }
 
         return false;
+    }
+
+    public function updateLocation($userId, $lat, $long)
+    {
+        if($userId && $lat && $long)
+        {
+            $location = Location::where('user_id', $userId)->first();
+
+            if($location)
+            {
+                return Location::where('user_id', $userId)->update([
+                    'lat'       => $lat,
+                    'long'      => $long
+                ]);
+            }
+
+            return Location::create([
+                'user_id'   => $userId,
+                'lat'       => $lat,
+                'long'      => $long
+            ]);
+        }
     }
 }

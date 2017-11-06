@@ -436,5 +436,30 @@ class UsersController extends Controller
 
         return $this->respondInternalError('Provide Valid Params!');     
     }
+
+    public function addUserLocation(Request $request)
+    {
+        if($request->get('lat') && $request->get('long'))
+        {
+            $user = Auth::user();            
+
+            $status = $this->users->updateLocation($user->id, $request->get('lat'), $request->get('long'));
+            
+            if($status)
+            {
+                $responseData = [
+                    'success' => 'Location Updated Successfully !'
+                ];
+
+                return $this->ApiSuccessResponse($responseData, 'Location Updated Successfully !');
+            }
+        }
+
+        $error = [
+            'message' => "Unable to Remove Team from Follow List"
+        ];
+
+        return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !');            
+    }
 }
 

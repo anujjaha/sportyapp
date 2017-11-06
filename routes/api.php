@@ -44,6 +44,10 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
     Route::get('sporty-gifs', 'UsersController@getGifs')->name('sporty.gifs');
 
+    Route::post('sporty-lat-long', 'UsersController@addUserLocation')->name('sporty.user-location');
+
+
+
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () 
     {
         Route::get('getdata', 'UsersController@getData')->name('api.getdata');
