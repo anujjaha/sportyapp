@@ -398,7 +398,7 @@ class UsersController extends Controller
     public function getGifs(Request $request)
     {
         $gifs = $this->users->getAllGif();
-        $responseData   = $this->userTransformer->getFo($gifs);
+        $responseData   = $this->userTransformer->getGifs($gifs);
         
         return $this->ApiSuccessResponse($responseData);        
     }
