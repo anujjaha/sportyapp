@@ -295,12 +295,14 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 
 	public function getAllFanChallengePosts($gameId = null , $homeTeamId = null, $awayTeamId = null)
 	{
+		$yesterday = date("Y-m-d H:i:s", strtotime('last day'));
+        
 		if($gameId && $homeTeamId && $awayTeamId)
 		{
-			return $this->model->with('post_likes')->where([
+			return $this->model->with('post_likes')->where('created_at', '>=', $yesterday)->where([
 				'game_id' 		=> $gameId,
 				'home_team_id' 	=> $homeTeamId,
-				'away_team_id' 	=> $awayTeamId
+				'away_team_id' 	=> $awayTeamId,
 			])->orderBy('id', 'desc')->get();			
 		}
 
