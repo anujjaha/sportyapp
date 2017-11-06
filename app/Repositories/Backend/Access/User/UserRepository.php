@@ -516,6 +516,9 @@ class UserRepository extends BaseRepository
     
     public function getAppUserList($param, $userId)
     {
+        $lat    = '';
+        $long   = false;
+
         $users = $this->query()
                 ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
                 ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
@@ -523,19 +526,62 @@ class UserRepository extends BaseRepository
                 ->where('users.id', '!=', $userId)
                 ->select('users.*')
                 ->orderBy('users.name');
+
+        $user = $this->model->find($userId);
+
+        if(isset($user->user_location->lat) && isset($user->user_location->long))
+        {
+            $lat    = $user->user_location->lat;
+            $long   = $user->user_location->long;
+        }
+        
         if(isset($param['search']) && $param['search'])
         {
             $users = $users->where('users.name', 'LIKE', $param["search"].'%');
         }
         $users = $users->get();
+
         foreach($users as $key => $value)
         {
+            if($lat && $long && isset($value->user_location->lat) && isset($value->user_location->long))
+            {
+                $users[$key]->distance = $this->distance($lat, $long, $value->user_location->lat, $value->user_location->long)  ;
+            }
+            else
+            {
+                $users[$key]->distance = 999999999999999999;   
+            }
+            
             $users[$key]->is_follow = $this->userFollow->checkRecordExist([
                     'user_id'       => $value->id,
                     'follower_id'   => $userId
                 ]);
         }
+            
+        $users = $users->sortBy('distance');
+
         return $users;
+    }
+
+    public function distance($lat1, $lon1, $lat2, $lon2, $unit = 'K') 
+    {
+        $theta = $lon1 - $lon2;
+        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+        $dist = acos($dist);
+        $dist = rad2deg($dist);
+        $miles = $dist * 60 * 1.1515;
+        $unit = strtoupper($unit);
+
+        $f = 0;
+
+        if ($unit == "K")
+            $f = $miles * 1.609344;
+        else if ($unit == "N")
+            $f = $miles * 0.8684;
+        else
+            $f = $miles;
+
+        return number_format($f, 2);
     }
 
     public function getCelebratyFans($user)
