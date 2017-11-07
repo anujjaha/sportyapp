@@ -3,7 +3,7 @@
 /**
  * Trait Attribute
  *
- * @author Justin Bevan justin@smokerschoiceusa.com
+ * @author Anuj Jaha er.anujjaha@gmail.com
  */
 
 use File;

@@ -3,7 +3,7 @@
 /**
  * Class Video
  *
- * @author Justin Bevan justin@smokerschoiceusa.com
+ * @author Anuj Jaha er.anujjaha@gmail.com
  */
 
 use App\Models\BaseModel;

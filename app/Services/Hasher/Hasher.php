@@ -3,7 +3,7 @@
 /**
  * Class Hasher
  *
- * @author Justin Bevan justin@smokerschoiceusa.com
+ * @author Anuj Jaha er.anujjaha@gmail.com
  * @package App\Services\Hasher
  */
 

@@ -3,8 +3,7 @@
 /**
  * Abstract Class DbRepository
  *
- * @author Justin Bevan justin@smokerschoiceusa.com
- * @package FTX\Repositories
+ * @author Anuj Jaha er.anujjaha@gmail.com
  */
 
 use App\Exceptions\GeneralException;
