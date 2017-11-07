@@ -402,4 +402,14 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
    		
    		return $this->model->with('post_likes')->where(['game_id' => $gameId, 'home_team_id' => $homeTeamId, 'away_team_id' => $awayTeamId, 'is_game_post' => 1])->orderBy('id', 'desc')->get();		
 	}
+
+	public function deletePost($userId = null, $postId = null)
+	{
+		if($userId && $postId)
+		{
+			return $this->model->where(['user_id' => $userId, 'id' => $postId])->delete();
+		}
+
+		return false;
+	}
 }

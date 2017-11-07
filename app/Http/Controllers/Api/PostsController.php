@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers\Api;
+<?php namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Transformers\PostTransformer;
@@ -267,6 +265,37 @@ class PostsController extends Controller
         {
             return $this->respondInternalError('Provide Valid prameters');
         } 
+    }
+
+    public function delete(Request $request)
+    {
+        if($request->get('post_id'))
+        {
+            $userId = Auth::user()->id;
+            $postId = $request->get('post_id');
+            $status = $this->respository->deletePost($userId, $postId);
+
+            if($status)
+            {
+                $this->setSuccessMessage("Post Deleted Successfully.");
+                
+                return $this->ApiSuccessResponse([
+                    'postDeleted'   => 1,
+                    'message'       => 'Post Deleted Successfully.'
+                    ]);
+            }
+
+            $this->setSuccessMessage("Not Authorized to delete the Post ! Try Again !");
+                
+            return $this->ApiSuccessResponse([
+                'postDeleted'   => 0,
+                'message'       => 'Unable to Delete Post.'
+                ]);
+        }
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        }    
     }
 
     /**
