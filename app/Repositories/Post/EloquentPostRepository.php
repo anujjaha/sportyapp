@@ -157,7 +157,7 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
    	{
    		//$oldWowzaDate = date('Y-m-d H:i:s', strtotime('-3 hours'));
 
-   		$this->model->where('created_at', '<=', $oldWowzaDate)->where('is_wowza', 1)->delete();
+   		//$this->model->where('created_at', '<=', $oldWowzaDate)->where('is_wowza', 1)->delete();
    		
    		return $this->model->with('post_likes')->where(['home_team_id' => NULL, 'away_team_id' => NULL, 'is_game_post' => 0])->orderBy('id', 'desc')->get();
    	}
@@ -398,7 +398,7 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 	{
 		//$oldWowzaDate = date('Y-m-d H:i:s', strtotime('-3 hours'));
 
-   		$this->model->where('created_at', '<=', $oldWowzaDate)->where('is_wowza', 1)->delete();
+   		//$this->model->where('created_at', '<=', $oldWowzaDate)->where('is_wowza', 1)->delete();
    		
    		return $this->model->with('post_likes')->where(['game_id' => $gameId, 'home_team_id' => $homeTeamId, 'away_team_id' => $awayTeamId, 'is_game_post' => 1])->orderBy('id', 'desc')->get();		
 	}
