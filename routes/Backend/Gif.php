@@ -1,11 +1,5 @@
 <?php
 
-/**
- * All route names are prefixed with 'admin.'.
- */
-Route::get('gif', 'AdminGifController@index')->name('gif');
-
-
 Route::group([
     'namespace'  => 'Gif',
 ], function () {
@@ -13,8 +7,10 @@ Route::group([
     /*
      * Admin Gif Controller
      */
-    Route::resource('gif', 'AdminGifController');
+    Route::resource('gifs', 'AdminGifController');
 
-    Route::get('/', 'AdminGifController@index')->name('gif.index');
-    Route::get('/get', 'AdminGifController@getTableData')->name('gif.get-data');
+    Route::get('/', 'AdminGifController@index')->name('gifs.index');
+    Route::any('gif/web', 'AdminGifController@getTableData')->name('gifs.custom-route');
 });
+
+?>

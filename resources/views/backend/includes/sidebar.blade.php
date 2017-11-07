@@ -38,9 +38,17 @@
             </li>
 
              <li class="{{ active_class(Active::checkUriPattern('admin/gif')) }}">
-                <a href="{{ route('admin.gif.index') }}">
+                <a href="{{ route('admin.gifs.index') }}">
                     <i class="fa fa-dashboard"></i>
                     <span>GIF Manager</span>
+                </a>
+            </li>
+
+
+            <li class="{{ active_class(Active::checkUriPattern('admin/news')) }}">
+                <a href="{{ route('admin.news.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>News Manager</span>
                 </a>
             </li>
 

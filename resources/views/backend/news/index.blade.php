@@ -1,22 +1,22 @@
 @extends ('backend.layouts.app')
 
-@section ('title', 'Gif Management')
+@section ('title', 'News Management')
 
 @section('after-styles')
     {{ Html::style("css/backend/plugin/datatables/dataTables.bootstrap.min.css") }}
 @endsection
 
 @section('page-header')
-    <h1>Gif Management</h1>
+    <h1>News Management</h1>
 @endsection
 
 @section('content')
     <div class="box box-success">
         <div class="box-header with-border">
-            <h3 class="box-title">Gif Listing</h3>
+            <h3 class="box-title">News Listing</h3>
 
             <div class="box-tools pull-right">
-                @include('common.gif.index-header-buttons', ['createRoute' => 'admin.gifs.create'])
+                @include('common.news.index-header-buttons', ['createRoute' => 'admin.news.create'])
             </div>
         </div>
 
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="box-body">
-            {!! history()->renderType('Gif') !!}
+            {!! history()->renderType('News') !!}
         </div>
     </div>
 @endsection
@@ -53,7 +53,7 @@
         var headers      = JSON.parse('{!! $repository->getTableHeaders() !!}'),
             columns      = JSON.parse('{!! $repository->getTableColumns() !!}');
             moduleConfig = {
-                getTableDataUrl: '{!! route("admin.gifs.custom-route") !!}'
+                getTableDataUrl: '{!! route("admin.news.get-data") !!}'
             };
 
         jQuery(document).ready(function()

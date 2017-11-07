@@ -1,9 +1,9 @@
-<?php namespace App\Models\Gif\Traits\Attribute;
+<?php namespace App\Models\News\Traits\Attribute;
 
 /**
  * Trait Attribute
  *
- * @author Anuj Jaha
+ * @author Anuj Jaha er.anujjaha@gmail.com
  */
 
 use File;
@@ -15,7 +15,7 @@ trait Attribute
 	 */
 	public function getEditButtonAttribute()
 	{
-	    return '<a href="'.route('admin.gifs.edit', $this).'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.edit').'"></i></a> ';
+	    return '<a href="'.route('admin.news.edit', $this).'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.edit').'"></i></a> ';
 	}
 
 	/**
@@ -23,7 +23,7 @@ trait Attribute
 	 */
 	public function getDeleteButtonAttribute()
 	{
-	    return '<a href="'.route('admin.gifs.destroy', $this).'"
+	    return '<a href="'.route('admin.news.destroy', $this).'"
 	            data-method="delete"
 	            data-trans-button-cancel="'.trans('buttons.general.cancel').'"
 	            data-trans-button-confirm="'.trans('buttons.general.crud.delete').'"

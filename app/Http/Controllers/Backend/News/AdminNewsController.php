@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\News;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
-use App\Repositories\Gif\EloquentGifRepository;
+use App\Repositories\News\EloquentNewsRepository;
+use Html;
 
 /**
  * Class AdminGifController
  */
-class AdminGifController extends Controller
+class AdminNewsController extends Controller
 {
 	/**
 	 * __construct
@@ -19,7 +20,7 @@ class AdminGifController extends Controller
 	 */
 	public function __construct()
 	{
-	   $this->repository = new EloquentGifRepository;
+	   $this->repository = new EloquentNewsRepository;	
 	}
 
     /**
@@ -29,7 +30,7 @@ class AdminGifController extends Controller
      */
     public function index()
     {
-        return view('backend.gif.index')->with(['repository' => $this->repository]);
+        return view('backend.news.index')->with(['repository' => $this->repository]);
     }
 
     /**
@@ -39,7 +40,12 @@ class AdminGifController extends Controller
      */
     public function create(Request $request)
     {
-    	return view('backend.event.create');
+        return view('backend.news.create');
+    }
+
+    public function show()
+    {
+
     }
 
     /**
@@ -49,9 +55,11 @@ class AdminGifController extends Controller
      */
     public function store(Request $request)
     {
-        $this->repository->create($request->all());
+        $input = $request->all();
 
-        return redirect()->route('admin.event.index');
+        $this->repository->create($input);
+
+        return redirect()->route('admin.news.index')->withFlashSuccess('News Created Successfully');
     }
 
     /**
@@ -61,9 +69,9 @@ class AdminGifController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $event = $this->repository->findOrThrowException($id);
+        $gif = $this->repository->findOrThrowException($id);
 
-        return view('backend.event.edit')->with(['item' => $event]);
+        return view('backend.news.edit')->with(['item' => $gif]);
     }
 
     /**
@@ -73,9 +81,11 @@ class AdminGifController extends Controller
      */
     public function update($id, Request $request)
     {
-        $status = $this->repository->update($id, $request->all());
+        $input = $request->all();
         
-        return redirect()->route('admin.event.index');
+        $status = $this->repository->update($id, $input);
+        
+        return redirect()->route('admin.news.index');
     }
 
     /**
@@ -87,7 +97,7 @@ class AdminGifController extends Controller
     {
         $status = $this->repository->destroy($id);
         
-        return redirect()->route('admin.event.index');
+        return redirect()->route('admin.news.index');
     }
 
   	/**
@@ -98,16 +108,11 @@ class AdminGifController extends Controller
     public function getTableData()
     {
         return Datatables::of($this->repository->getForDataTable())
-		    ->escapeColumns(['name', 'sort'])
-            ->escapeColumns(['username', 'sort'])
-            ->escapeColumns(['title', 'sort'])
-            ->addColumn('start_date', function ($event) {
-                return date('m-d-Y', strtotime($event->start_date));
-            })
-		    ->escapeColumns(['start_date', 'sort'])
-		    ->escapeColumns(['end_date', 'sort'])
-		    ->addColumn('actions', function ($event) {
-                return $event->action_buttons;
+		    ->escapeColumns(['id', 'sort'])
+            ->escapeColumns(['news', 'sort'])
+            ->addColumn('actions', function ($item)
+            {
+                return $item->action_buttons;
             })
 		    ->make(true);
     }
