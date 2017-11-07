@@ -9,6 +9,7 @@
 use App\Models\BaseModel;
 use App\Models\Access\User\User;
 use App\Models\Post\Post;
+use App\Models\CommentGif\CommentGif;
 #use App\Models\Post\Traits\Relationship\PostRelationship;
 
 class PostComment extends BaseModel
@@ -54,5 +55,14 @@ class PostComment extends BaseModel
     public function post_detail()
     {
         return $this->belongsTo(Post::class, 'post_id');
+    }
+
+    /**
+     * Relationship Mapping for Account
+     * @return mixed
+     */
+    public function comment_gif()
+    {
+        return $this->hasOne(CommentGif::class, 'comment_id');
     }
 }

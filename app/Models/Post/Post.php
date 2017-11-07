@@ -9,10 +9,11 @@
 use App\Models\BaseModel;
 use App\Models\Post\Traits\Attribute\Attribute;
 use App\Models\Post\Traits\Relationship\Relationship;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends BaseModel
 {
-    use Attribute, Relationship;
+    use Attribute, Relationship, SoftDeletes;
     /**
      * Database Table
      *
@@ -40,5 +41,12 @@ class Post extends BaseModel
      *
      */
     protected $guarded = ["id"];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
 }

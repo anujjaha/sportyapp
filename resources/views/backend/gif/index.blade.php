@@ -7,16 +7,16 @@
 @endsection
 
 @section('page-header')
-    <h1>Event Management</h1>
+    <h1>Gif Management</h1>
 @endsection
 
 @section('content')
     <div class="box box-success">
         <div class="box-header with-border">
-            <h3 class="box-title">Events Listing</h3>
+            <h3 class="box-title">Gif Listing</h3>
 
             <div class="box-tools pull-right">
-                @include('common.event.index-header-buttons', ['createRoute' => 'admin.event.create'])
+                @include('common.gif.index-header-buttons', ['createRoute' => 'admin.gif.create'])
             </div>
         </div>
 
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="box-body">
-            {!! history()->renderType('Event') !!}
+            {!! history()->renderType('Gif') !!}
         </div>
     </div>
 @endsection

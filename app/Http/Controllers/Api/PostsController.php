@@ -220,7 +220,7 @@ class PostsController extends Controller
      */
     public function createComment(Request $request)
     {
-        if($request->get('post_id') && $request->get('comment'))
+        if($request->get('post_id'))
         {
             $userId = Auth::user()->id;
             $status = $this->respository->createComment($userId, $request->all());

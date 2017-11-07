@@ -1,35 +1,35 @@
 @extends ('backend.layouts.app')
 
-@section ('title', isset($title) ? $title : 'Create Event')
+@section ('title', isset($title) ? $title : 'Create Gif')
 
 @section('page-header')
     <h1>
-        Event
+        Gif
         <small>Create</small>
     </h1>
 @endsection
 
 @section('content')
-    {{ Form::open(['route' => 'admin.event.store', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post']) }}
+    {{ Form::open(['route' => 'admin.gif.store', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'files' => true]) }}
 
         <div class="box box-success">
             <div class="box-header with-border">
-                <h3 class="box-title">Create Event</h3>
+                <h3 class="box-title">Create Gif</h3>
 
                 <div class="box-tools pull-right">
-                      @include('common.event.event-header-buttons', ['listRoute' => 'admin.event.index', 'createRoute' => 'admin.event.create'])
+                      @include('common.gif.header-buttons', ['listRoute' => 'admin.gif.index', 'createRoute' => 'admin.gif.create'])
                 </div>
             </div>
 
-            {{-- Event Form --}}
-            @include('common.event.form')
+            {{-- Gif Form --}}
+            @include('common.gif.form')
             
         </div>
 
         <div class="box box-info">
             <div class="box-body">
                 <div class="pull-left">
-                    {{ link_to_route('admin.event.index', 'Cancel', [], ['class' => 'btn btn-danger btn-xs']) }}
+                    {{ link_to_route('admin.gif.index', 'Cancel', [], ['class' => 'btn btn-danger btn-xs']) }}
                 </div>
 
                 <div class="pull-right">

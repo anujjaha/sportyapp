@@ -40,7 +40,7 @@ class AdminGifController extends Controller
      */
     public function create(Request $request)
     {
-    	return view('backend.event.create');
+    	return view('backend.gif.create');
     }
 
     /**
@@ -50,9 +50,22 @@ class AdminGifController extends Controller
      */
     public function store(Request $request)
     {
-        $this->repository->create($request->all());
+        $input = $request->all();
 
-        return redirect()->route('admin.event.index');
+        if($request->file('gif'))
+        {
+            $imageName  = rand(11111, 99999) . '_gif.' . $request->file('gif')->getClientOriginalExtension();
+            $request->file('gif')->move(base_path() . '/public/uploads/gif/', $imageName);
+            $input = array_merge($request->all(), ['gif' => $imageName]);
+        }
+        else
+        {
+            return redirect()->route('admin.gif.index')->withFlashDanger('Unable to create New GIF ! Please try again.');            
+        }
+
+        $this->repository->create($input);
+
+        return redirect()->route('admin.gif.index')->withFlashSuccess('GIF Created Successfully');
     }
 
     /**
@@ -62,9 +75,9 @@ class AdminGifController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $event = $this->repository->findOrThrowException($id);
+        $gif = $this->repository->findOrThrowException($id);
 
-        return view('backend.event.edit')->with(['item' => $event]);
+        return view('backend.gif.edit')->with(['item' => $gif]);
     }
 
     /**
@@ -74,9 +87,18 @@ class AdminGifController extends Controller
      */
     public function update($id, Request $request)
     {
-        $status = $this->repository->update($id, $request->all());
+        $input = $request->all();
         
-        return redirect()->route('admin.event.index');
+        if($request->file('gif'))
+        {
+            $imageName  = rand(11111, 99999) . '_gif.' . $request->file('gif')->getClientOriginalExtension();
+            $request->file('gif')->move(base_path() . '/public/uploads/gif/', $imageName);
+            $input = array_merge($request->all(), ['gif' => $imageName]);
+        }
+
+        $status = $this->repository->update($id, $input);
+        
+        return redirect()->route('admin.gif.index');
     }
 
     /**
@@ -88,7 +110,7 @@ class AdminGifController extends Controller
     {
         $status = $this->repository->destroy($id);
         
-        return redirect()->route('admin.event.index');
+        return redirect()->route('admin.gif.index');
     }
 
   	/**

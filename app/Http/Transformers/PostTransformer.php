@@ -83,6 +83,8 @@ class PostTransformer extends Transformer
                     $response[$sr]['postComments'][] = [
                         'commentId'         => $postComment->id,
                         'commentText'       => $postComment->comment,
+                        'is_image'          => $postComment->comment_gif ? 1 : 0,
+                        'commentImage'      => $postComment->comment_gif ?  URL::to('/').'/uploads/gif/'.$postComment->comment_gif->gif->gif : '',
                         'commentCreatedAt'  => date('m-d-Y H:i:s', strtotime($postComment->created_at)),
                         'userId'    => $postComment->user->id,            
                         'username'  => $postComment->user->username,

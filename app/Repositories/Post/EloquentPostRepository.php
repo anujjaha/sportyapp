@@ -6,6 +6,7 @@ use App\Models\Post\PostLike;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 use App\Models\PostGif\PostGif;
+use App\Models\CommentGif\CommentGif;
 
 class EloquentPostRepository extends DbRepository implements PostRepositoryContract
 {
@@ -233,11 +234,32 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 	{
 		if($userId && count($input))
 		{
-			$commentData = [
-				'user_id' 	=> $userId,
-				'post_id'	=> $input['post_id'],
-				'comment'	=> $input['comment']
-			];
+
+			if(isset($input['gif_id']) && $input['gif_id'] != '')
+			{
+				$commentData = [
+					'user_id' 	=> $userId,
+					'post_id'	=> $input['post_id'],
+					'comment'	=> 'GIF'
+				];
+
+				$comment =  PostComment::create($commentData);
+
+				CommentGif::create([
+					'comment_id' => $comment->id,
+					'gif_id'	 => $input['gif_id']
+				]);
+
+				return $comment;
+			}
+			else
+			{
+				$commentData = [
+					'user_id' 	=> $userId,
+					'post_id'	=> $input['post_id'],
+					'comment'	=> $input['comment']
+				];
+			}
 
 			return PostComment::create($commentData);
 		}

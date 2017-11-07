@@ -8,10 +8,11 @@
 
 use App\Models\BaseModel;
 use App\Models\Gif\Traits\Attribute\Attribute;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Gif extends BaseModel
 {
-    use Attribute;
+    use Attribute, SoftDeletes;
     
     /**
      * Database Table
@@ -35,4 +36,10 @@ class Gif extends BaseModel
 
     public $timestamps = true;
 
-}
+     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+}   
