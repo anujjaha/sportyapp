@@ -458,7 +458,7 @@ class PostsController extends Controller
                 $this->setSuccessMessage("Game Post Found Successfully.");
                 
                 return $this->ApiSuccessResponse([
-                    'postDeleted'   => 1,
+                    'postFound'   => 1,
                     'message'       => 'Game Post Found Successfully.'
                     ]);
             }
@@ -466,7 +466,7 @@ class PostsController extends Controller
              $this->setSuccessMessage("Game Post Not Found.");
                 
             return $this->ApiSuccessResponse([
-                'postDeleted'   => 0,
+                'postFound'   => 0,
                 'message'       => 'Game Post not Found.'
                 ]);
         }
