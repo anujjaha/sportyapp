@@ -47,6 +47,7 @@ class PostTransformer extends Transformer
                 'postCategory'      => $post->post_category,
                 'is_liked'          =>  0,
                 'created_at'        => date('m/d/Y H:i:s', strtotime($post->created_at)),
+                'can_delete'        => ($post->user->id == $currentUser) ? 1 : 0,
                 'postLikeCount'     => isset($post->post_likes) ? count($post->post_likes) : 0,
                 'postCommentCount'  => isset($post->post_comments) ? count($post->post_comments) : 0,
                 'postLikeUser'      => [],
@@ -80,17 +81,28 @@ class PostTransformer extends Transformer
             {
                 foreach($post->post_comments as $postComment)
                 {
+
+                    $commentGif = false;
+
+                    if(isset($postComment->comment_gif))
+                    {
+                        $commentGif = true;
+                    }
+
+
+
                     $response[$sr]['postComments'][] = [
                         'commentId'         => $postComment->id,
                         'commentText'       => $postComment->comment,
-                        'is_image'          => $postComment->comment_gif ? 1 : 0,
-                        'commentImage'      => $postComment->comment_gif ?  URL::to('/').'/uploads/gif/'.$postComment->comment_gif->gif->gif : '',
+                        'is_image'          => $commentGif ? 1 : 0,
+                        'commentImage'      => $commentGif ?  URL::to('/').'/uploads/gif/'.$postComment->comment_gif->gif : '',
                         'commentCreatedAt'  => date('m-d-Y H:i:s', strtotime($postComment->created_at)),
                         'userId'    => $postComment->user->id,            
                         'username'  => $postComment->user->username,
                         'name'      => $postComment->user->name,
                         'email'     => $postComment->user->email,
                         'location'  => $postComment->user->location,
+                        'can_delete'=> ($postComment->user->id == $currentUser) ? 1 : 0,
                         'image'     => $postComment->user->image ? URL::to('/').'/uploads/users/'.$postComment->user->image : '',
                     ];
                 }
