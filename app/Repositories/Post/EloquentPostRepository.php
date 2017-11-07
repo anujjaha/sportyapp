@@ -274,13 +274,13 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 	 * @param int $postId
 	 * @return bool
 	 */
-	public function deleteComment($userId = null, $postId = null)
+	public function deleteComment($userId = null, $commentId = null)
 	{
-		if($userId && $postId)
+		if($userId && $commentId)
 		{
 			$postComment = new PostComment;
 
-			return $postComment->where(['user_id' => $userId, 'post_id' => $postId])->delete();
+			return $postComment->where(['user_id' => $userId, 'id' => $commentId])->delete();
 		}
 
 		return false;

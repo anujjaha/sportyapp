@@ -246,11 +246,11 @@ class PostsController extends Controller
      */
     public function deleteComment(Request $request)
     {
-       if($request->get('post_id'))
+       if($request->get('comment_id'))
         {
-            $userId = Auth::user()->id;
-            $postId = $request->get('post_id');
-            $status = $this->respository->deleteComment($userId, $postId);
+            $userId     = Auth::user()->id;
+            $commentId  = $request->get('comment_id');
+            $status     = $this->respository->deleteComment($userId, $commentId);
 
             if($status)
             {
