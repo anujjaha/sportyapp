@@ -7,13 +7,12 @@
  */
 
 use App\Models\BaseModel;
-use App\Models\CommentGif\Traits\Relationship\Relationship;
 use App\Models\Gif\Gif;
 use App\Models\Post\PostComment;
 
 class CommentGif extends BaseModel
 {
-    use Relationship;
+
     /**
      * Database Table
      *

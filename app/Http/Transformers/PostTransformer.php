@@ -84,7 +84,7 @@ class PostTransformer extends Transformer
 
                     $commentGif = false;
 
-                    if(isset($postComment->comment_gif))
+                    if(isset($postComment->comment_gif) && $postComment->comment_gif->gif->gif)
                     {
                         $commentGif = true;
                     }
@@ -95,7 +95,7 @@ class PostTransformer extends Transformer
                         'commentId'         => $postComment->id,
                         'commentText'       => $postComment->comment,
                         'is_image'          => $commentGif ? 1 : 0,
-                        'commentImage'      => $commentGif ?  URL::to('/').'/uploads/gif/'.$postComment->comment_gif->gif : '',
+                        'commentImage'      => $commentGif ?  URL::to('/').'/uploads/gif/'.$postComment->comment_gif->gif->gif : '',
                         'commentCreatedAt'  => date('m-d-Y H:i:s', strtotime($postComment->created_at)),
                         'userId'    => $postComment->user->id,            
                         'username'  => $postComment->user->username,
