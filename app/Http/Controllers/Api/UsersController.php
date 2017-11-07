@@ -460,7 +460,7 @@ class UsersController extends Controller
         }
 
         $error = [
-            'message' => "Unable to Remove Team from Follow List"
+            'message' => "Unable to Set Location - Invalid Params - lat & long required"
         ];
 
         return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !');            

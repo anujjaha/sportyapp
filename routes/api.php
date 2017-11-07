@@ -75,7 +75,6 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
     Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () 
     {
-        Route::get('getlist', 'PostsController@getList')->name('api.getlist');
 
         Route::get('getpost-by-id', 'PostsController@getSingleItem')->name('api.get-single-post');
 
@@ -93,5 +92,9 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
         Route::post('remove-gif', 'PostsController@removeGif')->name('posts.remove-gif');
         Route::get('discover-posts', 'PostsController@discoverList')->name('api.getlist');
+
+
+        Route::post('game-timeline', 'PostsController@createGameTimeLine')->name('api.game-time-line');
+        Route::post('get-game-timeline', 'PostsController@getGameTimeLine')->name('api.get-game-time-line');
     });
 });

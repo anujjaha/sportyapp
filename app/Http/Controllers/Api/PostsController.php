@@ -370,4 +370,46 @@ class PostsController extends Controller
                
         }
     }
+
+    public function createGameTimeLine(Request $request)
+    {
+        $postData = $request->all();
+
+        if(isset($postData['description']) && $postData['description'])
+        {
+            $postData['user_id']    = Auth::user()->id;
+            $response               = $this->respository->gamePostcreate($postData);
+            if($response)
+            {
+                $this->setSuccessMessage("Game Post Successfully Created");
+                return $this->ApiSuccessResponse([]);
+            }
+            else
+            {
+                return $this->respondInternalError('Error in saving Game Post');
+            }
+        }
+        else
+        {
+            return $this->respondInternalError('Provide Valid prameters');
+        }        
+    }
+
+    public function getGameTimeLine(Request $request)
+    {
+        if(! $request->get('gameId'))
+        {
+            $request->request->add(['gameId' =>0]);
+        }
+
+        if($request->get('homeTeamId') && $request->get('awayTeamId'))
+        {
+            $posts  = $this->respository->getGamePosts($request->get('gameId'), $request->get('homeTeamId'), $request->get('awayTeamId'));
+            $responseData   = $this->postTransformer->postListWithLike($posts);
+
+            return $this->ApiSuccessResponse($responseData);        
+        }
+
+        return $this->respondInternalError('Invalid Inputs');
+    }
 }

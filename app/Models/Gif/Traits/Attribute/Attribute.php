@@ -1,9 +1,9 @@
-<?php namespace App\Models\FollowUser\Traits\Attribute;
+<?php namespace App\Models\Gif\Traits\Attribute;
 
 /**
  * Trait Attribute
  *
- * @author Justin Bevan justin@smokerschoiceusa.com
+ * @author Anuj Jaha
  */
 
 use File;
@@ -15,7 +15,7 @@ trait Attribute
 	 */
 	public function getEditButtonAttribute()
 	{
-	    return '<a href="'.route('admin.followuser.edit', $this).'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.edit').'"></i></a> ';
+	    return '<a href="'.route('admin.gif.edit', $this).'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.edit').'"></i></a> ';
 	}
 
 	/**
@@ -23,7 +23,7 @@ trait Attribute
 	 */
 	public function getDeleteButtonAttribute()
 	{
-	    return '<a href="'.route('admin.followuser.destroy', $this).'"
+	    return '<a href="'.route('admin.gif.destroy', $this).'"
 	            data-method="delete"
 	            data-trans-button-cancel="'.trans('buttons.general.cancel').'"
 	            data-trans-button-confirm="'.trans('buttons.general.crud.delete').'"

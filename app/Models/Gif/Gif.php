@@ -7,9 +7,11 @@
  */
 
 use App\Models\BaseModel;
+use App\Models\Gif\Traits\Attribute\Attribute;
 
 class Gif extends BaseModel
 {
+    use Attribute;
     
     /**
      * Database Table

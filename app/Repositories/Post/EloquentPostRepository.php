@@ -158,7 +158,7 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 
    		$this->model->where('created_at', '<=', $oldWowzaDate)->where('is_wowza', 1)->delete();
    		
-   		return $this->model->with('post_likes')->where(['home_team_id' => NULL, 'away_team_id' => NULL])->orderBy('id', 'desc')->get();
+   		return $this->model->with('post_likes')->where(['home_team_id' => NULL, 'away_team_id' => NULL, 'is_game_post' => 0])->orderBy('id', 'desc')->get();
    	}
 
    	/**
@@ -307,6 +307,7 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 				'game_id' 		=> $gameId,
 				'home_team_id' 	=> $homeTeamId,
 				'away_team_id' 	=> $awayTeamId,
+				'is_game_post' 	=> 0
 			])->orderBy('id', 'desc')->get();			
 		}
 
@@ -337,5 +338,46 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 		}
 
 		return false;
+	}
+
+	/**
+	 * Create Record
+	 *
+	 * @param array $input
+	 * @return mixed
+	 */
+	public function gamePostcreate($postData)
+	{
+		$destinationFolder  = public_path().'/uploads/posts';
+
+		$postData['is_image'] = isset($postData['is_image']) ? $postData['is_image'] : 1;
+
+
+        if (isset($postData['image']) && $postData['image']) 
+        { 
+            $extension = $postData['image']->getClientOriginalExtension();
+            $fileName = rand(11111,99999).'.'.$extension;
+            if($postData['image']->move($destinationFolder, $fileName))
+            {
+                $postData['image'] = $fileName;
+            }                       
+        }
+
+        $postData['is_game_post'] 	= 1;
+        $postData['game_id'] 		= $postData['gameId'];
+        $postData['home_team_id'] 	= $postData['homeTeamId'];
+        $postData['away_team_id'] 	= $postData['awayTeamId'];
+
+
+		return $this->model->create($postData);
+	}
+
+	public function getGamePosts($gameId, $homeTeamId, $awayTeamId)
+	{
+		$oldWowzaDate = date('Y-m-d H:i:s', strtotime('-3 hours'));
+
+   		$this->model->where('created_at', '<=', $oldWowzaDate)->where('is_wowza', 1)->delete();
+   		
+   		return $this->model->with('post_likes')->where(['game_id' => $gameId, 'home_team_id' => $homeTeamId, 'away_team_id' => $awayTeamId, 'is_game_post' => 1])->orderBy('id', 'desc')->get();		
 	}
 }

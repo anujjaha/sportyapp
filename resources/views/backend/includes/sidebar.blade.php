@@ -37,6 +37,13 @@
                 </a>
             </li>
 
+             <li class="{{ active_class(Active::checkUriPattern('admin/gif')) }}">
+                <a href="{{ route('admin.gif.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>GIF Manager</span>
+                </a>
+            </li>
+
             <li class="header">{{ trans('menus.backend.sidebar.system') }}</li>
 
             @role(1)
