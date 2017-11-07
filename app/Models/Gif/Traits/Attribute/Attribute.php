@@ -23,6 +23,7 @@ trait Attribute
 	 */
 	public function getDeleteButtonAttribute()
 	{
+		return '';
 	    return '<a href="'.route('admin.gifs.destroy', $this).'"
 	            data-method="delete"
 	            data-trans-button-cancel="'.trans('buttons.general.cancel').'"

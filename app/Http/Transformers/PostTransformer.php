@@ -81,16 +81,13 @@ class PostTransformer extends Transformer
             {
                 foreach($post->post_comments as $postComment)
                 {
-
                     $commentGif = false;
 
                     if(isset($postComment->comment_gif) && $postComment->comment_gif->gif->gif)
                     {
                         $commentGif = true;
                     }
-
-
-
+                    
                     $response[$sr]['postComments'][] = [
                         'commentId'         => $postComment->id,
                         'commentText'       => $postComment->comment,

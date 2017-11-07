@@ -441,4 +441,36 @@ class PostsController extends Controller
 
         return $this->respondInternalError('Invalid Inputs');
     }
+
+    public function checkGameTimeLine(Request $request)
+    {
+        if(! $request->get('gameId'))
+        {
+            $request->request->add(['gameId' =>0]);
+        }
+
+        if($request->get('homeTeamId') && $request->get('awayTeamId'))
+        {
+            $posts  = $this->respository->checkGamePosts($request->get('gameId'), $request->get('homeTeamId'), $request->get('awayTeamId'));
+
+            if($posts && count($posts) > 0)
+            {
+                $this->setSuccessMessage("Game Post Found Successfully.");
+                
+                return $this->ApiSuccessResponse([
+                    'postDeleted'   => 1,
+                    'message'       => 'Game Post Found Successfully.'
+                    ]);
+            }
+
+             $this->setSuccessMessage("Game Post Not Found.");
+                
+            return $this->ApiSuccessResponse([
+                'postDeleted'   => 0,
+                'message'       => 'Game Post not Found.'
+                ]);
+        }
+
+        return $this->respondInternalError('Invalid Inputs');
+    }
 }

@@ -412,4 +412,19 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 
 		return false;
 	}
+
+	public function checkGamePosts($gameId, $homeTeamId, $awayTeamId)
+	{
+		if($homeTeamId && $awayTeamId)
+		{
+			$gamePost = $this->model->where(['game_id' => $gameId, 'home_team_id' => $homeTeamId, 'away_team_id' => $awayTeamId, 'is_game_post' => 1])->first();	
+
+			if(isset($gamePost) && count($gamePost))
+			{
+				return $gamePost;
+			}
+		}
+
+		return false;
+	}
 }
