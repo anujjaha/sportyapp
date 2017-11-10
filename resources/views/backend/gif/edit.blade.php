@@ -10,13 +10,13 @@
 @endsection
 
 @section('content')
-    {{ Form::model($item, ['route' => ['admin.gif.update', $item], 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'PATCH', 'files' => true]) }}
+    {{ Form::model($item, ['route' => ['admin.gifs.update', $item], 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'PATCH', 'files' => true]) }}
 
         <div class="box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title">Gif</h3>
                     <div class="box-tools pull-right">
-                        @include('common.gif.header-buttons', ['listRoute' => 'admin.gif.index', 'createRoute' => 'admin.gif.create'])
+                        @include('common.gif.header-buttons', ['listRoute' => 'admin.gifs.index', 'createRoute' => 'admin.gifs.create'])
                     </div>
             </div>
 
@@ -27,7 +27,7 @@
         <div class="box box-success">
             <div class="box-body">
                 <div class="pull-left">
-                    {{ link_to_route('admin.gif.index', 'Cancel', [], ['class' => 'btn btn-danger btn-xs']) }}
+                    {{ link_to_route('admin.gifs.index', 'Cancel', [], ['class' => 'btn btn-danger btn-xs']) }}
                 </div>
 
                 <div class="pull-right">

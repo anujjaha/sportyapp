@@ -36,14 +36,23 @@ class PostsController extends Controller
     public function create(Request $request)
     {
         $postData = $request->all();
+        $successResponse = [];
+
         if(isset($postData['description']) && $postData['description'])
         {
             $postData['user_id']    = Auth::user()->id;
             $response               = $this->respository->create($postData);
+            
             if($response)
             {
+                if($response->is_wowza == 1)
+                {
+                    $successResponse = [
+                        'postId' => $response->id
+                    ];
+                }
                 $this->setSuccessMessage("Post Successfully Created");
-                return $this->ApiSuccessResponse([]);
+                return $this->ApiSuccessResponse($successResponse);
             }
             else
             {

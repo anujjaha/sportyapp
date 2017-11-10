@@ -39,7 +39,7 @@ class AdminGifController extends Controller
      */
     public function create(Request $request)
     {
-    	return view('backend.event.create');
+    	return view('backend.gif.create');
     }
 
     /**
