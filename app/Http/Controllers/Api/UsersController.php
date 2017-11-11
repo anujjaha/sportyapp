@@ -479,12 +479,35 @@ class UsersController extends Controller
 
                 return $this->ApiSuccessResponse($responseData, 'Post Reported Successfully  !');
             }
-
-            
         }
 
         $error = [
             'message' => "Unable to Report Post"
+        ];
+
+        return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !'); 
+    }
+
+    public function reportComment(Request $request)
+    {
+        if($request->get('comment_id'))
+        {
+            $user = Auth::user();            
+
+            $status = $this->users->reportPost($user->id, $request->get('comment_id'));
+
+            if($status)
+            {
+                $responseData = [
+                    'success' => 'Comment Reported Successfully !'
+                ];
+
+                return $this->ApiSuccessResponse($responseData, 'Comment Reported Successfully  !');
+            }
+        }
+
+        $error = [
+            'message' => "Unable to Report Comment"
         ];
 
         return $this->setStatusCode(404)->ApiSuccessResponse($error, 'Something went wrong !'); 

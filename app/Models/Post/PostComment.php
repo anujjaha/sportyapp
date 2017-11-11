@@ -10,10 +10,12 @@ use App\Models\BaseModel;
 use App\Models\Access\User\User;
 use App\Models\Post\Post;
 use App\Models\CommentGif\CommentGif;
+use Illuminate\Database\Eloquent\SoftDeletes;
 #use App\Models\Post\Traits\Relationship\PostRelationship;
 
 class PostComment extends BaseModel
 {
+    use SoftDeletes;
 //    use PostRelationship;
     /**
      * Database Table
@@ -30,6 +32,13 @@ class PostComment extends BaseModel
         'user_id',
         'comment'
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * Guarded ID Column

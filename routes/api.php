@@ -31,6 +31,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
 
 
     Route::any('report-post', 'UsersController@reportPost')->name('report.report-post');
+    Route::any('report-comment', 'UsersController@reportComment')->name('report.report-comment');
 
     Route::get('sporty-fans', 'APIFansController@index')->name('fans.index');
     Route::post('sporty-fans/check', 'APIFansController@checkFanMeter')->name('fans.check-fan-meter');

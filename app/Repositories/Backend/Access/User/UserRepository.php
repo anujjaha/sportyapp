@@ -28,6 +28,9 @@ use App\Models\Gif\Gif;
 use App\Models\News\News;
 use App\Models\Location\Location;
 use App\Models\Report\Report;
+use App\Models\ReportComment\ReportComment;
+use App\Models\Post\PostComment;
+
 /**
  * Class UserRepository.
  */
@@ -879,7 +882,7 @@ class UserRepository extends BaseRepository
         }
     }
 
-    public function reportPost($userId, $postId)
+    public function reportPost($userId = null, $postId = null)
     {
         if($userId && $postId)
         {
@@ -892,5 +895,21 @@ class UserRepository extends BaseRepository
         }
 
         return false;
+    }
+
+    public function reportComment($userId = null, $commentId = null)
+    {
+        if($userId && $commentId)
+        {
+            PostComment::where('id', $commentId)->delete();
+            
+            return ReportComment::create([
+                'user_id'   => $userId,
+                'post_id'   => $commentId
+            ]);
+        }
+
+        return false;
+        
     }
 }
