@@ -392,6 +392,15 @@ class UsersController extends Controller
         return $this->ApiSuccessResponse($responseData);        
     }
 
+    public function getFollowings(Request $request)
+    {
+        $user           = Auth::user();
+        $followers      = $this->followUser->getMyFollowing($user);
+        $responseData   = $this->userTransformer->getMyFollowers($followers);
+
+        return $this->ApiSuccessResponse($responseData);        
+    }
+
     public function getGifs(Request $request)
     {
         $gifs = $this->users->getAllGif();

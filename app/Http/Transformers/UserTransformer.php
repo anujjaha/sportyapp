@@ -123,7 +123,7 @@ class UserTransformer extends Transformer
                     'location'  => $follower->user->location,
                     'is_follow' => 1,
                     'username'  => $follower->user->username,
-                    'image'     => $follower->user->image ? URL::to('/').'/uploads/team/'.$follower->user->image : URL::to('/').'/uploads/team/default.png'
+                    'image'     => $follower->user->image ? URL::to('/').'/uploads/users/'.$follower->user->image : URL::to('/').'/uploads/users/default.png'
 
                 ];
             }
