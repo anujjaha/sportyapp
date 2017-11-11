@@ -154,10 +154,20 @@ class UserTransformer extends Transformer
     public function userData($users)
     {
         $response = [];
-        
+
         foreach($users as $user)
         {
-
+            $response[] = [ 
+                'id'    => $user->id,
+                'username' => $user->username,
+                'name'      => $user->name,
+                'email'     => $user->email,
+                'location'  => $user->location ? $user->location : '',
+                'image'     => $user->image ? URL::to('/').'/uploads/users/'.$user->image : URL::to('/').'/uploads/users/default.png',
+                'is_follow' => $user->is_follow ? 1 : 0
+            ];
         }
+
+        return $response;
     }
 }
