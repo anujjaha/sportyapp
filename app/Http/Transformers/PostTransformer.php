@@ -63,7 +63,7 @@ class PostTransformer extends Transformer
                  'is_wowza'         => (isset($post->is_wowza) && $post->is_wowza == 1) ? 1 :0,
                 'postCategory'      => $post->post_category,
                 'is_liked'          =>  0,
-                'created_at'        => date('m/d/Y H:i:s', strtotime($post->created_at)),
+                'created_at'        => $post->created_at->diffForHumans(),
                 'can_delete'        => ($post->user->id == $currentUser) ? 1 : 0,
                 'postLikeCount'     => isset($post->post_likes) ? count($post->post_likes) : 0,
                 'postCommentCount'  => isset($post->post_comments) ? count($post->post_comments) : 0,
