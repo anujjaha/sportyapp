@@ -219,6 +219,7 @@ class UsersController extends Controller
         $postData = $request->all();
         $users = $this->users->getAppUserList($postData, Auth::user()->id);
         $responseData = $this->userTransformer->transformCollection($users->toArray());
+        //$responseData = $this->userTransformer->userData($users->toArray());
         return $this->ApiSuccessResponse($responseData);
     }
 

@@ -20,7 +20,7 @@ class PostTransformer extends Transformer
         {
             if(isset($data['video_image']))
             {
-                $videoImg = URL::to('/').'/uploads/users/'.$data['video_image'];
+                $videoImg = URL::to('/').'/uploads/posts/'.$data['video_image'];
             }            
         }
 
@@ -52,7 +52,7 @@ class PostTransformer extends Transformer
             {
                 if(isset($post->video_image))
                 {
-                    $videoImg = URL::to('/').'/uploads/users/'.$post->video_image;
+                    $videoImg = URL::to('/').'/uploads/posts/'.$post->video_image;
                 }            
             }
 

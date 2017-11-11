@@ -149,7 +149,15 @@ class UserTransformer extends Transformer
         }
 
         return $response;
+    }
 
+    public function userData($users)
+    {
+        $response = [];
+        
+        foreach($users as $user)
+        {
 
+        }
     }
 }
