@@ -48,15 +48,11 @@ class PostTransformer extends Transformer
         {
             $videoImg = URL::to('/').'/uploads/users/video-thumbnail.png';
 
-            if($post->is_image == 1 && isset($post->is_image) || $post->is_wowza == 1)
+            if(isset($post->video_image))
             {
-                if(isset($post->video_image))
-                {
-                    $videoImg = URL::to('/').'/uploads/posts/'.$post->video_image;
-                }            
-            }
-
-
+                $videoImg = URL::to('/').'/uploads/posts/'.$post->video_image;
+            }            
+            
             $response[$sr] = [  
                 'id'                => (int) $post->id,
                 'image'             => ($post->is_image == 1 && $post->image) ?  URL::to('/').'/uploads/posts/'.$post->image : '',
