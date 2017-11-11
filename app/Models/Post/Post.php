@@ -27,6 +27,7 @@ class Post extends BaseModel
     protected $fillable = [
         'user_id',
         'image',
+        'video_image',
         'description',
         'is_image',
         'is_wowza',

@@ -48,6 +48,17 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
                 $postData['image'] = $fileName;
             }                       
         }
+
+        if (isset($postData['video_image']) && $postData['video_image']) 
+        { 
+            $extension = $postData['video_image']->getClientOriginalExtension();
+            $fileName = rand(11111,99999).'.'.$extension;
+            if($postData['video_image']->move($destinationFolder, $fileName))
+            {
+                $postData['video_image'] = $fileName;
+            }                       
+        }
+
 		return $this->model->create($postData);
 	}
 
