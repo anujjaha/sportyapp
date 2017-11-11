@@ -56,7 +56,7 @@ class PostTransformer extends Transformer
             $response[$sr] = [  
                 'id'                => (int) $post->id,
                 'image'             => ($post->is_image == 1 && $post->image) ?  URL::to('/').'/uploads/posts/'.$post->image : '',
-                'video'             => (isset($post->is_wowza) && $post->is_wowza == 1) ? $post->description : '',
+                'video'             => (isset($post->is_wowza) && $post->is_wowza == 1) ? $post->description : ($post->image) ? URL::to('/').'/uploads/posts/'.$post->image : '',
                 'is_image'          => $post->is_image ? $post->is_image : '',
                 'videoImg'          => $videoImg,
                 'description'       => $this->nulltoBlank($post->description),
@@ -79,6 +79,11 @@ class PostTransformer extends Transformer
                     'location'  => $post->user->location
                 ],
             ];
+
+            if(isset($post->is_wowza) &&  $post->is_wowza == 1)
+            {
+                 $response[$sr]['video'] = $post->description;
+            }
 
             if(isset($post->post_gifs))
             {
