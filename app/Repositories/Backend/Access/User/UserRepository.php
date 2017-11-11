@@ -27,7 +27,7 @@ use App\Models\FanChallenge\FanChallenge;
 use App\Models\Gif\Gif;
 use App\Models\News\News;
 use App\Models\Location\Location;
-
+use App\Models\Report\Report;
 /**
  * Class UserRepository.
  */
@@ -877,5 +877,20 @@ class UserRepository extends BaseRepository
                 'long'      => $long
             ]);
         }
+    }
+
+    public function reportPost($userId, $postId)
+    {
+        if($userId && $postId)
+        {
+            Post::where('id', $postId)->delete();
+            
+            return Report::create([
+                'user_id'   => $userId,
+                'post_id'   => $postId
+            ]);
+        }
+
+        return false;
     }
 }

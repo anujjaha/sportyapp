@@ -30,6 +30,8 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     Route::get('events', 'EventsController@index')->name('api.events');
 
 
+    Route::any('report-post', 'UsersController@reportPost')->name('report.report-post');
+
     Route::get('sporty-fans', 'APIFansController@index')->name('fans.index');
     Route::post('sporty-fans/check', 'APIFansController@checkFanMeter')->name('fans.check-fan-meter');
     Route::post('sporty-fans/get-team-ratio', 'APIFansController@teamRatio')->name('fans.get-team-ratio');
