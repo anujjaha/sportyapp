@@ -57,6 +57,13 @@ class AdminNewsController extends Controller
     {
         $input = $request->all();
 
+        if($request->file('news_image'))
+        {
+            $imageName  = rand(11111, 99999) . '_news.' . $request->file('news_image')->getClientOriginalExtension();
+            $request->file('news_image')->move(base_path() . '/public/uploads/posts/', $imageName);
+            $input = array_merge($request->all(), ['news_image' => $imageName]);
+        }
+
         $this->repository->create($input);
 
         return redirect()->route('admin.news.index')->withFlashSuccess('News Created Successfully');
@@ -82,6 +89,13 @@ class AdminNewsController extends Controller
     public function update($id, Request $request)
     {
         $input = $request->all();
+        
+        if($request->file('news_image'))
+        {
+            $imageName  = rand(11111, 99999) . '_news.' . $request->file('news_image')->getClientOriginalExtension();
+            $request->file('news_image')->move(base_path() . '/public/uploads/posts/', $imageName);
+            $input = array_merge($request->all(), ['news_image' => $imageName]);
+        }
         
         $status = $this->repository->update($id, $input);
         
@@ -110,6 +124,17 @@ class AdminNewsController extends Controller
         return Datatables::of($this->repository->getForDataTable())
 		    ->escapeColumns(['id', 'sort'])
             ->escapeColumns(['news', 'sort'])
+             ->addColumn('news_image', function ($item) 
+            {
+                if($item->news_image && file_exists(base_path() . '/public/uploads/posts/'.$item->news_image))
+                {
+                    return  Html::image('/uploads/posts/'.$item->news_image, $item->news_image, ['width' => 60, 'height' => 60]);
+                }
+                else
+                {
+                    return  Html::image('/uploads/posts/default.png', $item->news, ['width' => 60, 'height' => 60]);    
+                }
+            })
             ->addColumn('actions', function ($item)
             {
                 return $item->action_buttons;

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Backend\Access\User;
 
+use Carbon, URL;
 use App\Models\Access\User\User;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
@@ -24,6 +25,7 @@ use App\Models\FollowTeam\FollowTeam;
 use App\Models\FanMeter\FanMeter;
 use App\Models\FanChallenge\FanChallenge;
 use App\Models\Gif\Gif;
+use App\Models\News\News;
 use App\Models\Location\Location;
 
 /**
@@ -600,23 +602,24 @@ class UserRepository extends BaseRepository
 
     public function getNews($gameId = null)
     {
-        return [
-            [
-                'description'   => 'News ONe',
-                'image'         => 'http://cdn01.cdn.justjared.com/wp-content/uploads/headlines/2017/02/apprentice-top.jpg',
-                'news_time'     => '15 min ago'
-            ],
-            [
-                'description'   => 'News Two',
-                'image'         => 'http://cdn01.cdn.justjared.com/wp-content/uploads/headlines/2017/02/apprentice-top.jpg',
-                'news_time'     => '15 min ago'
-            ],
-            [
-                'description'   => 'News Three',
-                'image'         => 'http://cdn01.cdn.justjared.com/wp-content/uploads/headlines/2017/02/apprentice-top.jpg',
-                'news_time'     => '15 min ago'
-            ]
-        ];
+        $allNews = News::all();
+
+        $response = [];
+
+        if(count($allNews))
+        {
+            foreach($allNews as $news)
+            {
+                $response[] = [
+                    'description'   => $news->news,
+                    'image'         => isset($news->news) ? URL::to('/').'/uploads/posts/'.$news->news_image  : URL::to('/').'/uploads/posts/default.png',
+                    'news_time'     => $news->created_at->diffForHumans()
+
+                ];
+            }
+        }
+
+        return $response;
     }
 
     /**

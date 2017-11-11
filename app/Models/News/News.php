@@ -26,6 +26,7 @@ class News extends BaseModel
     protected $fillable = [
         'user_id',
         'news',
+        'news_image',
         'status'
     ];
 

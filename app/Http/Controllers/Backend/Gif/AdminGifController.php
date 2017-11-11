@@ -98,7 +98,7 @@ class AdminGifController extends Controller
 
         $status = $this->repository->update($id, $input);
         
-        return redirect()->route('admin.gif.index');
+        return redirect()->route('admin.gifs.index');
     }
 
     /**

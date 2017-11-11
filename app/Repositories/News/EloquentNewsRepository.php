@@ -22,6 +22,7 @@ class EloquentNewsRepository extends DbRepository
 	public $tableHeaders = [
 		'Id',
 		'News',
+		'Image',
 		'Actions'
 	];
 
@@ -42,6 +43,12 @@ class EloquentNewsRepository extends DbRepository
 			'name' 			=> 'news',
 			'searchable' 	=> true, 
 			'sortable'		=> true
+		],
+		[
+			'data' 			=> 'news_image',
+			'name' 			=> 'news_image',
+			'searchable' 	=> false, 
+			'sortable'		=> false
 		],
 		[
 			'data' 			=> 'actions',
@@ -154,6 +161,7 @@ class EloquentNewsRepository extends DbRepository
     	return [
 			$this->model->getTable().'.id as id',
 			$this->model->getTable().'.news',
+			$this->model->getTable().'.news_image',
 		];
     }
 
