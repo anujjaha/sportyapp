@@ -184,7 +184,7 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
 
    		//$this->model->where('created_at', '<=', $oldWowzaDate)->where('is_wowza', 1)->delete();
    		
-   		return $this->model->with('post_likes')->where(['user_id' => $userId, 'home_team_id' => NULL, 'away_team_id' => NULL, 'is_game_post' => 0])->orderBy('id', 'desc')->get();
+   		return $this->model->with('post_likes')->where(['user_id' => $userId])->orderBy('id', 'desc')->get();
    	}
 
    	/**
