@@ -174,6 +174,20 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
    	}
 
    	/**
+     * Get AllPosts
+     * 
+     * @return object
+     */
+   	public function getAllUserPosts($userId = null)
+   	{
+   		//$oldWowzaDate = date('Y-m-d H:i:s', strtotime('-3 hours'));
+
+   		//$this->model->where('created_at', '<=', $oldWowzaDate)->where('is_wowza', 1)->delete();
+   		
+   		return $this->model->with('post_likes')->where(['user_id' => $userId, 'home_team_id' => NULL, 'away_team_id' => NULL, 'is_game_post' => 0])->orderBy('id', 'desc')->get();
+   	}
+
+   	/**
      * Get Single Post By Id
      * 
      * @return object

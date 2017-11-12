@@ -81,6 +81,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function 
     {
 
         Route::get('getpost-by-id', 'PostsController@getSingleItem')->name('api.get-single-post');
+        Route::any('user/shots', 'PostsController@userShots')->name('api.user-shots');
 
         Route::get('getlist', 'PostsController@getList')->name('api.getlist');
         Route::post('getdata', 'PostsController@getData')->name('api.getlist');

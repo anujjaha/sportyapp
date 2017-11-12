@@ -482,4 +482,22 @@ class PostsController extends Controller
 
         return $this->respondInternalError('Invalid Inputs');
     }
+
+    public function userShots(Request $request)
+    {
+        if(! $request->get('user_id'))
+        {
+            $userId = $userId = Auth::user()->id;
+        }
+        else
+        {
+            $userId = $request->get('user_id');
+        }
+
+        $posts          = $this->respository->getAllUserPosts($userId);
+        $responseData   = $this->postTransformer->postListWithLike($posts);
+
+        return $this->ApiSuccessResponse($responseData);
+
+    }
 }
