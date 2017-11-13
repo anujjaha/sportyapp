@@ -22,6 +22,10 @@ class DashboardController extends Controller
 
     public function timeline(Request $request)
     {
-    	die('xx');
+    	$userId = Auth()->user()->id;
+    	$obj = new EloquentPostRepository();
+    	$posts = $obj->getAllPosts($userId);
+
+    	return view('backend.posts.index')->with(['posts' => $posts]);
     }
 }
