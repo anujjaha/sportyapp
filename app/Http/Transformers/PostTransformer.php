@@ -57,7 +57,7 @@ class PostTransformer extends Transformer
                 'id'                => (int) $post->id,
                 'image'             => ($post->is_image == 1 && $post->image) ?  URL::to('/').'/uploads/posts/'.$post->image : '',
                 'video'             => (isset($post->is_wowza) && $post->is_wowza == 1) ? $post->description : ($post->image) ? URL::to('/').'/uploads/posts/'.$post->image : '',
-                'is_image'          => $post->is_image ? $post->is_image : '',
+                'is_image'          => $post->is_image ? (string) $post->is_image : '',
                 'videoImg'          => $videoImg,
                 'description'       => $this->nulltoBlank($post->description),
                  'is_wowza'         => (isset($post->is_wowza) && $post->is_wowza == 1) ? 1 :0,
