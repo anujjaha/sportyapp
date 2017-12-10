@@ -60,12 +60,12 @@ class AdminGifController extends Controller
         }
         else
         {
-            return redirect()->route('admin.gif.index')->withFlashDanger('Unable to create New GIF ! Please try again.');            
+            return redirect()->route('admin.gifs.index')->withFlashDanger('Unable to create New GIF ! Please try again.');            
         }
 
         $this->repository->create($input);
 
-        return redirect()->route('admin.gif.index')->withFlashSuccess('GIF Created Successfully');
+        return redirect()->route('admin.gifs.index')->withFlashSuccess('GIF Created Successfully');
     }
 
     /**
@@ -110,7 +110,7 @@ class AdminGifController extends Controller
     {
         $status = $this->repository->destroy($id);
         
-        return redirect()->route('admin.gif.index');
+        return redirect()->route('admin.gifs.index');
     }
 
   	/**
