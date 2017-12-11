@@ -46,7 +46,7 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
             $fileName = rand(11111,99999).'.'.$extension;
             $thumbName = rand(11111,99999).'-thumb.'.$extension;
             // Resize Image with Thumbnail
-			Image::make($postData['image'])->resize(600, 390)->save(public_path('uploads/posts/'. $thumbName));
+			Image::make($postData['image'])->fit(450)->save(public_path('uploads/posts/'. $thumbName));
 
             if($postData['image']->move($destinationFolder, $fileName))
             {
