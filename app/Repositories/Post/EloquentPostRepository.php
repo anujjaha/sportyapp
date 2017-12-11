@@ -7,6 +7,7 @@ use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 use App\Models\PostGif\PostGif;
 use App\Models\CommentGif\CommentGif;
+use Image;
 
 class EloquentPostRepository extends DbRepository implements PostRepositoryContract
 {
@@ -43,19 +44,29 @@ class EloquentPostRepository extends DbRepository implements PostRepositoryContr
         if (isset($postData['image']) && $postData['image']) { 
             $extension = $postData['image']->getClientOriginalExtension();
             $fileName = rand(11111,99999).'.'.$extension;
+            $thumbName = rand(11111,99999).'-thumb.'.$extension;
+            // Resize Image with Thumbnail
+			Image::make($postData['image'])->resize(600, 390)->save(public_path('uploads/posts/'. $thumbName));
+
             if($postData['image']->move($destinationFolder, $fileName))
             {
-                $postData['image'] = $fileName;
+            	$postData['image'] 				= $fileName;
+                $postData['image_thumbnail'] 	= $thumbName;
             }                       
         }
 
         if (isset($postData['video_image']) && $postData['video_image']) 
         { 
-            $extension = $postData['video_image']->getClientOriginalExtension();
-            $fileName = rand(11111,99999).'.'.$extension;
+            $extension 	= $postData['video_image']->getClientOriginalExtension();
+            $fileName 	= rand(11111,99999).'.'.$extension;
+            $thumbName 	= rand(11111,99999).'-thumb.'.$extension;
             if($postData['video_image']->move($destinationFolder, $fileName))
             {
-                $postData['video_image'] = $fileName;
+            	// Resize Image with Thumbnail
+            	Image::make($postData['video_image'])->resize(600, 390)->save(public_path('uploads/posts/' . $thumbName));
+
+                $postData['video_image'] 		= $fileName;
+                $postData['image_thumbnail'] 	= $thumbName;
             }                       
         }
 

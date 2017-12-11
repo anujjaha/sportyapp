@@ -32,6 +32,7 @@ class Post extends BaseModel
         'is_image',
         'is_wowza',
         'is_game_post',
+        'image_thumbnail',
         'game_id',
         'home_team_id',
         'away_team_id'

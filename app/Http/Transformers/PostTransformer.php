@@ -29,6 +29,7 @@ class PostTransformer extends Transformer
             'image'         => ($data['is_image'] == 1 && $data['image']) ?  URL::to('/').'/uploads/posts/'.$data['image'] : '',
             'video'         => (isset($data['is_wowza']) && $data['is_wowza'] == 1) ? $data['description'] : URL::to('/').'/uploads/posts/'.$data['image'],
             'videoImg'      => $videoImg,
+            'thumbnailImage'    => isset($data['image_thumbnail']) ?  URL::to('/').'/uploads/posts/'.$data['image_thumbnail'] : '',
             'is_image'      => $data['is_image'] ? $data['is_image'] : '',
             'description'   => (isset($data['is_wowza']) && $data['is_wowza'] == 1) ? : $this->nulltoBlank($data['description']),
             'created_at'    => date('m/d/Y H:i:s', strtotime($data['created_at'])),
@@ -56,6 +57,7 @@ class PostTransformer extends Transformer
             $response[$sr] = [  
                 'id'                => (int) $post->id,
                 'image'             => ($post->is_image == 1 && $post->image) ?  URL::to('/').'/uploads/posts/'.$post->image : '',
+                'thumbnailImage'    => isset($post->image_thumbnail) ?  URL::to('/').'/uploads/posts/'.$post->image_thumbnail : '',
                 'video'             => (isset($post->is_wowza) && $post->is_wowza == 1) ? $post->description : ($post->image) ? URL::to('/').'/uploads/posts/'.$post->image : '',
                 'is_image'          => $post->is_image ? (string) $post->is_image : '',
                 'videoImg'          => $videoImg,
